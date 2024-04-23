@@ -1,4 +1,4 @@
-package org.mercadolibre.multicapatemplate;
+package org.mercadolibre.NotNullTeam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

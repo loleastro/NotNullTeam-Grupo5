@@ -1,4 +1,4 @@
-package org.mercadolibre.multicapatemplate;
+package org.mercadolibre.NotNullTeam;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
