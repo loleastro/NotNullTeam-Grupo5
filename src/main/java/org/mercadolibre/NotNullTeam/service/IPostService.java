@@ -5,5 +5,5 @@ import org.mercadolibre.NotNullTeam.DTO.response.PostsByFollowedDTO;
 
 public interface IPostService {
     void createPost(PostDTO postDTO);
-    PostsByFollowedDTO getPostsBySellerTwoWeeksAgo(Long userId);
+    PostsByFollowedDTO getPostsBySellerTwoWeeksAgo(Long userId, String order);
 }

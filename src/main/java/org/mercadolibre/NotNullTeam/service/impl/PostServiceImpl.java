@@ -58,7 +58,7 @@ public class PostServiceImpl implements IPostService {
     }
 
     @Override
-    public PostsByFollowedDTO getPostsBySellerTwoWeeksAgo(Long userId) {
+    public PostsByFollowedDTO getPostsBySellerTwoWeeksAgo(Long userId, String order) {
         List<Post> posts = new ArrayList<>();
         iBuyerRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Buyer"))
@@ -66,7 +66,11 @@ public class PostServiceImpl implements IPostService {
                 .map(post -> iPostRepository.getPostsBySellerIdTwoWeeksAgo(post.getUser().getId()))
                 .forEach(posts::addAll);
 
-        posts.sort(Comparator.comparing(Post::getDate).reversed());
+        if(order.equals("date_asc")) {
+            posts.sort(Comparator.comparing(Post::getDate));
+        }else{
+            posts.sort(Comparator.comparing(Post::getDate).reversed());
+        }
 
         return postToPostByFollowed(userId, posts);
     }

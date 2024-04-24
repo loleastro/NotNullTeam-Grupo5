@@ -18,7 +18,8 @@ public class PostController {
     }
 
     @GetMapping("/products/followed/{userId}/list")
-    public ResponseEntity<?> getPostsBySellerTwoWeeksAgo(@PathVariable Long userId) {
-        return ResponseEntity.ok(iPostService.getPostsBySellerTwoWeeksAgo(userId));
+    public ResponseEntity<?> getPostsBySellerTwoWeeksAgo(@PathVariable Long userId,
+                                                         @RequestParam(required = false, defaultValue = "date_desc") String order){
+        return ResponseEntity.ok(iPostService.getPostsBySellerTwoWeeksAgo(userId, order));
     }
 }
