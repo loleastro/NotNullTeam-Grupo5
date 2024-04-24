@@ -41,4 +41,15 @@ public class BuyerServiceImpl implements IBuyerService {
                 .stream()
                 .map(e -> new BuyerResponseWithNotSellerListDTO(e.getUser().getId(), e.getUser().getName())).toList();
     }
+
+    @Override
+    public void unfollowSeller(Long userId, Long userIdToUnfollow) {
+        Buyer buyer =
+                iBuyerRepository.findById(userId).orElseThrow(() -> new NotFoundException("Buyer"));
+        Seller seller =
+                iSellerRepository.findById(userIdToUnfollow).orElseThrow(() -> new NotFoundException("Seller"));
+
+        buyer.removeFollowed(seller);
+        seller.removeFollower(buyer);
+    }
 }

@@ -8,4 +8,6 @@ public interface IBuyerService {
     void followSeller(Long userId, Long sellerToFollowId);
 
     List<BuyerResponseWithNotSellerListDTO> getAll();
+
+    void unfollowSeller(Long userId, Long userIdToUnfollow);
 }

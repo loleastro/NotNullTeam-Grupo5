@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
 import org.mercadolibre.NotNullTeam.service.IBuyerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +19,14 @@ public class BuyerController {
     public ResponseEntity<?> getAll() {
         List<BuyerResponseWithNotSellerListDTO> buyers = iBuyerService.getAll();
         return ResponseEntity.ok(buyers);
+    }
+
+    @PostMapping("/users/{userId}/unfollow/{userIdToUnfollow}")
+    public ResponseEntity<?> unfollowSeller(@PathVariable Long userId,
+                                            @PathVariable Long userIdToUnfollow) {
+
+        iBuyerService.unfollowSeller(userId, userIdToUnfollow);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/users/{userId}/follow/{userIdToFollow}")
