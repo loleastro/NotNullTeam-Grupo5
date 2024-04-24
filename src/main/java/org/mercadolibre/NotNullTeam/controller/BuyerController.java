@@ -2,7 +2,6 @@ package org.mercadolibre.NotNullTeam.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
-import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.service.IBuyerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
