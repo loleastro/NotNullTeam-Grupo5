@@ -19,4 +19,8 @@ public class Buyer {
     public void addNewFollowed(Seller seller) {
         followedList.add(seller);
     }
+
+    public void removeFollowed(Seller seller) {
+        followedList.remove(seller);
+    }
 }
