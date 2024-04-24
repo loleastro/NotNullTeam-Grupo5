@@ -1,7 +1,9 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.SellerFollowersCountDto;
+import org.mercadolibre.NotNullTeam.DTO.response.SellerResponseDTO;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
@@ -20,5 +22,19 @@ public class SellerServiceImpl implements ISellerService {
         int followersCount = seller.quantityOfFollowers();
 
         return new SellerFollowersCountDto(seller.getUser().getId(), seller.getUser().getName(), followersCount);
+    }
+
+    @Override
+    public SellerResponseDTO getListFollowers(Long userId) {
+        Seller seller = iSellerRepository
+                .findById(userId)
+                .orElseThrow(() -> new NotFoundException("Seller"));
+
+        return new SellerResponseDTO(
+                seller.getUser().getId(),
+                seller.getUser().getName(),
+                seller.getFollowersList().stream().map(
+                        s -> new BuyerResponseWithNotSellerListDTO(
+                                s.getUser().getId(),s.getUser().getName())).toList());
     }
 }
