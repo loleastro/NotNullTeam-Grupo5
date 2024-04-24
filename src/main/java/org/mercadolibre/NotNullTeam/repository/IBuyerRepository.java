@@ -14,4 +14,5 @@ public interface IBuyerRepository {
     List<Buyer> findAll();
 
     boolean existsById(Long id);
+
 }
