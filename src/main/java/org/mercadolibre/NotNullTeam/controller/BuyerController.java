@@ -1,8 +1,10 @@
 package org.mercadolibre.NotNullTeam.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
 import org.mercadolibre.NotNullTeam.service.IBuyerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +33,11 @@ public class BuyerController {
         iBuyerService.followSeller(userId, userIdToFollow);
 //? o 204
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/users/{userId}/followed/list")
+    public ResponseEntity<BuyerResponseDTO> getFollowedList(@PathVariable Long userId){
+        return new ResponseEntity<>(iBuyerService.getFollowedList(userId), HttpStatus.OK);
     }
 
 }
