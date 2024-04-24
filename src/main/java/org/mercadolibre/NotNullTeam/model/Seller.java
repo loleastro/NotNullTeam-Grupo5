@@ -24,4 +24,7 @@ public class Seller {
         return followersList.size();
     }
 
+    public void removeFollower(Buyer buyer) {
+        followersList.remove(buyer);
+    }
 }
