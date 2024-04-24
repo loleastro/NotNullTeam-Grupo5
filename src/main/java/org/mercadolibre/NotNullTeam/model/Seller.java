@@ -20,6 +20,7 @@ public class Seller {
         followersList.add(buyer);
     }
 
+
     public int quantityOfFollowers() {
         return followersList.size();
     }
