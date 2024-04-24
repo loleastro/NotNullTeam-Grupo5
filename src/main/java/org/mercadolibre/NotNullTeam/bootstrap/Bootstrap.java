@@ -23,13 +23,19 @@ public class Bootstrap implements InitializingBean {
     public void afterPropertiesSet() {
         User userOne = new User(1L, "Juan Perez");
         User userTwo = new User(2L, "Maria Lopez");
-        User userThree = new User(3L, "Pedro Gomez");
+        User userThree = new User(3L, "Carlos Tevez");
+        User userFour = new User(3L, "Agustin Diaz");
+        User userFive = new User(3L, "Bernardo Thomas");
 
         Buyer buyerOne = new Buyer(userOne, new ArrayList<>());
         Buyer buyerTwo = new Buyer(userTwo, new ArrayList<>());
         Seller sellerOne = new Seller(userThree,  new ArrayList<>(List.of(buyerOne, buyerTwo)));
+        Seller sellerTwo = new Seller(userFour,  new ArrayList<>(List.of(buyerOne, buyerTwo)));
+        Seller sellerThree = new Seller(userFive,  new ArrayList<>(List.of(buyerOne, buyerTwo)));
 
         buyerOne.addNewFollowed(sellerOne);
+        buyerOne.addNewFollowed(sellerTwo);
+        buyerOne.addNewFollowed(sellerThree);
         buyerTwo.addNewFollowed(sellerOne);
 
         buyerRepository.save(buyerOne);
