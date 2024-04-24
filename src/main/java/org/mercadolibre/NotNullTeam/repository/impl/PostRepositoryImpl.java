@@ -14,12 +14,6 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public void createPost(Post post) {
-        System.out.println(post);
         posts.add(post);
-    }
-
-    @Override
-    public boolean existsById(Long id) {
-        return posts.stream().anyMatch(p -> p.getId().equals(id));
     }
 }

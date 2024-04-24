@@ -27,7 +27,11 @@ public class PostServiceImpl implements IPostService {
     }
 
     private Post postDtoToPost(PostDTO postDTO) {
-        return new Post(findSellerById(postDTO.getUser_id()), LocalDate.parse(postDTO.getDate(), DateTimeFormatter.ofPattern("dd-MM-yyyy")), productDtoToProduct(postDTO.getProduct()), postDTO.getCategory(), postDTO.getPrice());
+        return new Post(findSellerById(postDTO.getUser_id()),
+                LocalDate.parse(postDTO.getDate(),
+                        DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                productDtoToProduct(postDTO.getProduct()), postDTO.getCategory(),
+                postDTO.getPrice());
     }
 
     private Seller findSellerById(Long id){
@@ -36,6 +40,11 @@ public class PostServiceImpl implements IPostService {
     }
 
     private Product productDtoToProduct(ProductDTO productDTO) {
-        return new Product(productDTO.getProduct_id(), productDTO.getProduct_name(), productDTO.getType(), productDTO.getBrand(), productDTO.getColor(), productDTO.getNotes());
+        return new Product(productDTO.getProduct_id(),
+                productDTO.getProduct_name(),
+                productDTO.getType(),
+                productDTO.getBrand(),
+                productDTO.getColor(),
+                productDTO.getNotes());
     }
 }

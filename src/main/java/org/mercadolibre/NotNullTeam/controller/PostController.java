@@ -14,7 +14,7 @@ public class PostController {
     final IPostService iPostService;
 
     @PostMapping("/products/post")
-    public ResponseEntity<?> createProduct(@RequestBody PostDTO postDTO) {
+    public ResponseEntity<?> createPost(@RequestBody PostDTO postDTO) {
         iPostService.createPost(postDTO);
         return ResponseEntity.ok("Product created successfully!");
     }

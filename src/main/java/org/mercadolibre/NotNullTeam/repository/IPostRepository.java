@@ -4,5 +4,4 @@ import org.mercadolibre.NotNullTeam.model.Post;
 
 public interface IPostRepository {
     void createPost(Post post);
-    boolean existsById(Long id);
 }
