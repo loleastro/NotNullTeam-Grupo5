@@ -63,4 +63,14 @@ public class BuyerServiceImpl implements IBuyerService {
                 ).toList()
         );
     }
+
+    public void unfollowSeller(Long userId, Long userIdToUnfollow) {
+        Buyer buyer =
+                iBuyerRepository.findById(userId).orElseThrow(() -> new NotFoundException("Buyer"));
+        Seller seller =
+                iSellerRepository.findById(userIdToUnfollow).orElseThrow(() -> new NotFoundException("Seller"));
+
+        buyer.removeFollowed(seller);
+        seller.removeFollower(buyer);
+    }
 }

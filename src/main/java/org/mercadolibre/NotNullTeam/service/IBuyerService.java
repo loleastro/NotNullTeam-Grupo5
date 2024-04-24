@@ -11,4 +11,6 @@ public interface IBuyerService {
     List<BuyerResponseWithNotSellerListDTO> getAll();
 
     BuyerResponseDTO getFollowedList(Long userId);
+
+    void unfollowSeller(Long userId, Long userIdToUnfollow);
 }
