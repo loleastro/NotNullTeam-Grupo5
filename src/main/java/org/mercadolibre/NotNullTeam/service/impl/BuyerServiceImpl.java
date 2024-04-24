@@ -1,6 +1,8 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.model.Seller;
@@ -18,6 +20,7 @@ public class BuyerServiceImpl implements IBuyerService {
 
     final IBuyerRepository iBuyerRepository;
     final ISellerRepository iSellerRepository;
+    final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void followSeller(Long userId, Long sellerToFollowId) {
@@ -32,7 +35,10 @@ public class BuyerServiceImpl implements IBuyerService {
     }
 
     @Override
-    public List<Buyer> getAll() {
-        return iBuyerRepository.findAll();
+    public List<BuyerResponseWithNotSellerListDTO> getAll() {
+        return iBuyerRepository
+                .findAll()
+                .stream()
+                .map(e -> new BuyerResponseWithNotSellerListDTO(e.getUser().getId(), e.getUser().getName())).toList();
     }
 }

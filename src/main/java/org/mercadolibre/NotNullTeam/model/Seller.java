@@ -1,19 +1,20 @@
 package org.mercadolibre.NotNullTeam.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Seller {
     private User user;
-    @JsonIgnore
-    private List<Buyer> followersList;
+    private List<Buyer> followersList = new ArrayList<>();
 
     public void addNewFollower(Buyer buyer) {
         followersList.add(buyer);

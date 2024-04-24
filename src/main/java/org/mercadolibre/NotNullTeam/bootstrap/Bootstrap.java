@@ -7,6 +7,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +25,12 @@ public class Bootstrap implements InitializingBean {
         User userTwo = new User(2L, "Maria Lopez");
         User userThree = new User(3L, "Pedro Gomez");
 
-        Buyer buyerOne = new Buyer(userOne, null);
-        Buyer buyerTwo = new Buyer(userTwo, null);
-        Seller sellerOne = new Seller(userThree, List.of(buyerOne, buyerTwo));
+        Buyer buyerOne = new Buyer(userOne, new ArrayList<>());
+        Buyer buyerTwo = new Buyer(userTwo, new ArrayList<>());
+        Seller sellerOne = new Seller(userThree,  new ArrayList<>(List.of(buyerOne, buyerTwo)));
 
-        buyerOne.setFollowedList(List.of(sellerOne));
-        buyerTwo.setFollowedList(List.of(sellerOne));
+        buyerOne.addNewFollowed(sellerOne);
+        buyerTwo.addNewFollowed(sellerOne);
 
         buyerRepository.save(buyerOne);
         buyerRepository.save(buyerTwo);

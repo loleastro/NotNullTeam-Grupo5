@@ -1,6 +1,7 @@
 package org.mercadolibre.NotNullTeam.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
 import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.service.IBuyerService;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class BuyerController {
 
     @GetMapping("/users/all")
     public ResponseEntity<?> getAll() {
-        List<Buyer> buyers = iBuyerService.getAll();
+        List<BuyerResponseWithNotSellerListDTO> buyers = iBuyerService.getAll();
         return ResponseEntity.ok(buyers);
     }
 

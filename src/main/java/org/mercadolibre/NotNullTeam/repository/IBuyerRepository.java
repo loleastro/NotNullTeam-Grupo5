@@ -12,4 +12,6 @@ public interface IBuyerRepository {
     void save(Buyer buyer);
 
     List<Buyer> findAll();
+
+    boolean existsById(Long id);
 }

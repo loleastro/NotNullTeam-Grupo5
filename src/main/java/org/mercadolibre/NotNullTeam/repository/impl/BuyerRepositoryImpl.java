@@ -27,6 +27,13 @@ public class BuyerRepositoryImpl implements IBuyerRepository {
     }
 
     @Override
+    public boolean existsById(Long id) {
+        return buyers.stream().anyMatch(
+                b -> Objects.equals(b.getUser().getId(), id)
+        );
+    }
+
+    @Override
     public void save(Buyer buyer) {
         buyers.add(buyer);
     }
