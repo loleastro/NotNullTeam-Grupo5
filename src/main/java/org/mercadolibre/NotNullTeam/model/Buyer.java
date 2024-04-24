@@ -12,4 +12,8 @@ import java.util.List;
 public class Buyer {
     private User user;
     private List<Seller> followedList;
+
+    public void addNewFollowed(Seller seller) {
+        followedList.add(seller);
+    }
 }

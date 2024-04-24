@@ -1,6 +1,7 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
@@ -8,7 +9,7 @@ import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
 import org.mercadolibre.NotNullTeam.service.IBuyerService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
 
 
 @Service
@@ -21,17 +22,17 @@ public class BuyerServiceImpl implements IBuyerService {
     @Override
     public void followSeller(Long userId, Long sellerToFollowId) {
 
-        // TODO: ver si podemos tirar la excepcion en el repository si no encuentra el id
+        Buyer buyer =
+                iBuyerRepository.findById(userId).orElseThrow(() -> new NotFoundException("Buyer"));
+        Seller seller =
+                iSellerRepository.findById(sellerToFollowId).orElseThrow(() -> new NotFoundException("Seller"));
 
-        Optional<Buyer> buyerOptional = iBuyerRepository.findById(userId);
-        Optional<Seller> sellerOptional = iSellerRepository.findById(sellerToFollowId);
+        buyer.addNewFollowed(seller);
+        seller.addNewFollower(buyer);
+    }
 
-        if(buyerOptional.isPresent() && sellerOptional.isPresent()){
-            Buyer buyer = buyerOptional.get();
-            Seller seller = sellerOptional.get();
-            iBuyerRepository.followSeller(buyer,seller);
-        }
-
-
+    @Override
+    public List<Buyer> getAll() {
+        return iBuyerRepository.findAll();
     }
 }

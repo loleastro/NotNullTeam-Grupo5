@@ -1,6 +1,5 @@
 package org.mercadolibre.NotNullTeam.repository;
 
-import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.model.Seller;
 
 import java.util.Optional;

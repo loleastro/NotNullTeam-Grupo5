@@ -1,7 +1,6 @@
 package org.mercadolibre.NotNullTeam.repository.impl;
 
 import org.mercadolibre.NotNullTeam.model.Buyer;
-import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,6 @@ public class BuyerRepositoryImpl implements IBuyerRepository {
 
     List<Buyer> buyers = new ArrayList<>();
 
-
     @Override
     public Optional<Buyer> findById(Long id) {
         return buyers.stream().filter(
@@ -24,8 +22,8 @@ public class BuyerRepositoryImpl implements IBuyerRepository {
     }
 
     @Override
-    public void followSeller(Buyer buyer, Seller seller) {
-
+    public List<Buyer> findAll() {
+        return buyers;
     }
 
     @Override
