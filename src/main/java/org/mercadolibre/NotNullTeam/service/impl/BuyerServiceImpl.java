@@ -47,21 +47,20 @@ public class BuyerServiceImpl implements IBuyerService {
 
     @Override
     public BuyerResponseDTO getFollowedList(Long userId) {
-        Optional<Buyer> buyerOptional = iBuyerRepository.findById(userId);
-        if(buyerOptional.isPresent()){
-            Buyer buyer = buyerOptional.get();
-            return new BuyerResponseDTO(
-                    buyer.getUser().getId(),
-                    buyer.getUser().getName(),
-                    buyer.getFollowedList().stream().map(
-                            s -> new SellerResponseWithNotBuyerListDTO(
-                                    s.getUser().getId(),
-                                    s.getUser().getName()
-                            )
-                    ).toList()
-            );
-        } else {
-            throw new NotFoundException("Buyer");
-        }
+        Buyer buyer =
+                iBuyerRepository
+                        .findById(userId)
+                        .orElseThrow(() -> new NotFoundException("Buyer"));
+
+        return new BuyerResponseDTO(
+                buyer.getUser().getId(),
+                buyer.getUser().getName(),
+                buyer.getFollowedList().stream().map(
+                        s -> new SellerResponseWithNotBuyerListDTO(
+                                s.getUser().getId(),
+                                s.getUser().getName()
+                        )
+                ).toList()
+        );
     }
 }
