@@ -27,4 +27,9 @@ public class BuyerRepositoryImpl implements IBuyerRepository {
     public void followSeller(Buyer buyer, Seller seller) {
 
     }
+
+    @Override
+    public void save(Buyer buyer) {
+        buyers.add(buyer);
+    }
 }

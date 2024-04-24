@@ -9,4 +9,6 @@ public interface IBuyerRepository {
 
     Optional<Buyer> findById(Long id);
     void followSeller(Buyer buyer, Seller seller);
+
+    void save(Buyer buyer);
 }
