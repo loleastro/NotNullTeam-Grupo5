@@ -55,6 +55,8 @@ public class SellerServiceImpl implements ISellerService, ISellerServiceInternal
 
     @Override
     public SellerResponseDTO getListFollowersOrdered(Long userId, String order) {
+
+        // TODO: REFACTORIZAR A UN SOLO METODO
         Seller seller = iSellerRepository
                 .findById(userId)
                 .orElseThrow(() -> new NotFoundException("No se encontro el vendedor con ID = " + userId));

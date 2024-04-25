@@ -35,8 +35,12 @@ public class BuyerServiceImpl implements IBuyerService {
         if(buyer.getFollowedList().stream().anyMatch(s -> s.getUser().getId().equals(sellerToFollowId))){
             throw new UserAlreadyFollowedException();
         }
+
         buyer.addNewFollowed(seller);
         seller.addNewFollower(buyer);
+
+        // TODO: aca deberiamos llamar al repo para actualizar los objetos, metodo update pero que quede como todo
+
     }
 
     @Override
@@ -59,7 +63,7 @@ public class BuyerServiceImpl implements IBuyerService {
         } else if (order.equals("name_desc")) {
             followedList.sort(Comparator.comparing(Seller::getUsername).reversed());
         }
-
+        //TODO: refactorizar
         return new BuyerResponseDTO(
                 buyer.getUser().getId(),
                 buyer.getUser().getName(),
@@ -78,6 +82,8 @@ public class BuyerServiceImpl implements IBuyerService {
 
         buyer.removeFollowed(seller);
         seller.removeFollower(buyer);
+
+        // TODO: ACTUALIZAR EL OBJETO en el repo
     }
 
     public Buyer findBuyerById(Long id){

@@ -19,6 +19,7 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public void createPost(Post post) {
         if (!posts.containsKey(post.getSeller().getUser().getId())) {
+            // TODO: SACAR A VARIABLE AUXILIAR
             posts.put(post
                     .getSeller()
                     .getUser()
@@ -33,6 +34,7 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public List<Post> getPostsBySellerIdTwoWeeksAgo(Long sellerId){
+        // TODO: INYECTAR EL 2 COMO PARAMETRO O PASARLO A VARIABLE DE CLASE, Y CAMBIAR EL NOMBRE DEL METODO
         return posts.containsKey(sellerId) ? posts.get(sellerId).stream()
                 .filter(post -> ChronoUnit.WEEKS.between(post.getDate(), LocalDate.now()) <= 2)
                 .toList() : new ArrayList<>();

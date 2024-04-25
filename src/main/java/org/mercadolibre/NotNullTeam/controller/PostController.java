@@ -18,6 +18,7 @@ public class PostController {
 
     @PostMapping("/post")
     public ResponseEntity<?> createPost(@RequestBody PostDTO postDTO) {
+        //TODO: DEVOLVER AL MENOS EL ID
         iPostService.createPost(postDTO);
         return new ResponseEntity<>(
                 new PostCreatedDto("Post created successfully", LocalDate.now()), HttpStatus.CREATED);

@@ -61,6 +61,7 @@ public class PostServiceImpl implements IPostService {
     public PostsByFollowedDTO getPostsBySellerTwoWeeksAgo(Long userId, String order) {
         List<Post> posts = new ArrayList<>();
 
+        // TODO: refactor demasiado largo, desglozarlo, mantenibilidad, separarlo en pasos x legibilidad
         iBuyerRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Buyer"))
                 .getFollowedList().stream()
