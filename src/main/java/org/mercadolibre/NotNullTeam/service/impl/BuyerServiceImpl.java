@@ -15,8 +15,7 @@ import org.mercadolibre.NotNullTeam.service.ISellerService;
 import org.mercadolibre.NotNullTeam.service.ISellerServiceInternal;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 @Service
@@ -48,21 +47,29 @@ public class BuyerServiceImpl implements IBuyerService {
     }
 
     @Override
-    public BuyerResponseDTO getFollowedList(Long userId) {
+    public BuyerResponseDTO getFollowedListOrdered(Long userId, String order) {
         Buyer buyer =
                 this.findBuyerById(userId);
+
+        List<Seller> followedList = buyer.getFollowedList();
+
+        if (order.equals("name_asc")) {
+            followedList.sort(Comparator.comparing(Seller::getUsername));
+        } else if (order.equals("name_desc")) {
+            followedList.sort(Comparator.comparing(Seller::getUsername).reversed());
+        }
 
         return new BuyerResponseDTO(
                 buyer.getUser().getId(),
                 buyer.getUser().getName(),
-                buyer.getFollowedList().stream().map(
+                followedList.stream().map(
                         s -> new SellerResponseWithNotBuyerListDTO(
                                 s.getUser().getId(),
                                 s.getUser().getName()
-                        )
-                ).toList()
+                        )).toList()
         );
     }
+
 
     public void unfollowSeller(Long userId, Long userIdToUnfollow) {
         Buyer buyer = this.findBuyerById(userId);

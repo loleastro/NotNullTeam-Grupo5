@@ -10,7 +10,7 @@ public interface IBuyerService {
 
     List<BuyerResponseWithNotSellerListDTO> getAll();
 
-    BuyerResponseDTO getFollowedList(Long userId);
+    BuyerResponseDTO getFollowedListOrdered(Long userId, String order);
 
     void unfollowSeller(Long userId, Long userIdToUnfollow);
 }

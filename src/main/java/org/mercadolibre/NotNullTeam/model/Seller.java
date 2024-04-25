@@ -27,4 +27,8 @@ public class Seller {
     public void removeFollower(Buyer buyer) {
         followersList.remove(buyer);
     }
+
+    public String getUsername() {
+        return getUser().getName();
+    }
 }
