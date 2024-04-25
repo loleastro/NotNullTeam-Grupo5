@@ -1,22 +1,22 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.SellerResponseWithNotBuyerListDTO;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.exception.error.UserAlreadyFollowedException;
+import org.mercadolibre.NotNullTeam.mapper.BuyerMapper;
+import org.mercadolibre.NotNullTeam.mapper.SellerMapper;
 import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
 import org.mercadolibre.NotNullTeam.service.IBuyerService;
-import org.mercadolibre.NotNullTeam.service.ISellerService;
 import org.mercadolibre.NotNullTeam.service.ISellerServiceInternal;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
 
 
 @Service
@@ -39,8 +39,12 @@ public class BuyerServiceImpl implements IBuyerService {
         buyer.addNewFollowed(seller);
         seller.addNewFollower(buyer);
 
-        // TODO: aca deberiamos llamar al repo para actualizar los objetos, metodo update pero que quede como todo
+        updateRepositories(buyer, seller);
+    }
 
+    private void updateRepositories(Buyer buyer, Seller seller){
+        iBuyerRepository.update(buyer);
+        iSellerRepository.update(seller);
     }
 
     @Override
@@ -63,16 +67,9 @@ public class BuyerServiceImpl implements IBuyerService {
         } else if (order.equals("name_desc")) {
             followedList.sort(Comparator.comparing(Seller::getUsername).reversed());
         }
-        //TODO: refactorizar
-        return new BuyerResponseDTO(
-                buyer.getUser().getId(),
-                buyer.getUser().getName(),
-                followedList.stream().map(
-                        s -> new SellerResponseWithNotBuyerListDTO(
-                                s.getUser().getId(),
-                                s.getUser().getName()
-                        )).toList()
-        );
+
+        return BuyerMapper.toBuyerResponseDTO(buyer,
+                  SellerMapper.toListSellerResponseWithNotBuyerListDTO(followedList));
     }
 
 
@@ -83,7 +80,7 @@ public class BuyerServiceImpl implements IBuyerService {
         buyer.removeFollowed(seller);
         seller.removeFollower(buyer);
 
-        // TODO: ACTUALIZAR EL OBJETO en el repo
+        updateRepositories(buyer, seller);
     }
 
     public Buyer findBuyerById(Long id){
