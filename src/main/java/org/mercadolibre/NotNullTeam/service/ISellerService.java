@@ -7,4 +7,6 @@ public interface ISellerService {
     SellerFollowersCountDto getFollowersCount(Long userId);
 
     SellerResponseDTO getListFollowers(Long userId);
+
+    SellerResponseDTO getListFollowersOrdered(Long userId, String order);
 }
