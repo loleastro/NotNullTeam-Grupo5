@@ -50,13 +50,12 @@ public class SellerServiceImpl implements ISellerService {
 
         List<Buyer> followersList = seller.getFollowersList();
 
-        if (order != null) {
-            if (order.equals("name_asc")) {
-                followersList.sort(Comparator.comparing(Buyer::getUsername));
-            } else if (order.equals("name_desc")) {
-                followersList.sort(Comparator.comparing(Buyer::getUsername).reversed());
-            }
+        if (order.equals("name_asc")) {
+            followersList.sort(Comparator.comparing(Buyer::getUsername));
+        } else if (order.equals("name_desc")) {
+            followersList.sort(Comparator.comparing(Buyer::getUsername).reversed());
         }
+
         return new SellerResponseDTO(
                 seller.getUser().getId(),
                 seller.getUsername(),

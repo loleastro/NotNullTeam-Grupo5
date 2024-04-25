@@ -36,14 +36,13 @@ public class BuyerController {
                                           @PathVariable Long userIdToFollow) {
 
         iBuyerService.followSeller(userId, userIdToFollow);
-//? o 204
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/users/{userId}/followed/list")
     public ResponseEntity<BuyerResponseDTO> getFollowedListOrdered(
             @PathVariable Long userId,
-            @RequestParam(name = "order", required = false) String order){
+            @RequestParam(name = "order", required = false, defaultValue = "name_asc") String order){
         return new ResponseEntity<>(
                 iBuyerService.getFollowedListOrdered(userId, order),
                 HttpStatus.OK
