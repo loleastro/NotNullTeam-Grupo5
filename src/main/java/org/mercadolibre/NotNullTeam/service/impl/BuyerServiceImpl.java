@@ -11,6 +11,8 @@ import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
 import org.mercadolibre.NotNullTeam.service.IBuyerService;
+import org.mercadolibre.NotNullTeam.service.ISellerService;
+import org.mercadolibre.NotNullTeam.service.ISellerServiceInternal;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,18 +21,18 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class BuyerServiceImpl implements IBuyerService {
-
     final IBuyerRepository iBuyerRepository;
     final ISellerRepository iSellerRepository;
+    final ISellerServiceInternal iSellerService;
+
+
     final ObjectMapper mapper = new ObjectMapper();
 
     @Override
     public void followSeller(Long userId, Long sellerToFollowId) {
 
-        Buyer buyer =
-                iBuyerRepository.findById(userId).orElseThrow(() -> new NotFoundException("Buyer"));
-        Seller seller =
-                iSellerRepository.findById(sellerToFollowId).orElseThrow(() -> new NotFoundException("Seller"));
+        Buyer buyer = this.findBuyerById(userId);
+        Seller seller =iSellerService.findById(sellerToFollowId);
 
         buyer.addNewFollowed(seller);
         seller.addNewFollower(buyer);
@@ -47,9 +49,7 @@ public class BuyerServiceImpl implements IBuyerService {
     @Override
     public BuyerResponseDTO getFollowedListOrdered(Long userId, String order) {
         Buyer buyer =
-                iBuyerRepository
-                        .findById(userId)
-                        .orElseThrow(() -> new NotFoundException("Buyer"));
+                this.findBuyerById(userId);
 
         List<Seller> followedList = buyer.getFollowedList();
 
@@ -72,12 +72,17 @@ public class BuyerServiceImpl implements IBuyerService {
 
 
     public void unfollowSeller(Long userId, Long userIdToUnfollow) {
-        Buyer buyer =
-                iBuyerRepository.findById(userId).orElseThrow(() -> new NotFoundException("Buyer"));
-        Seller seller =
-                iSellerRepository.findById(userIdToUnfollow).orElseThrow(() -> new NotFoundException("Seller"));
+        Buyer buyer = this.findBuyerById(userId);
+        Seller seller = iSellerService.findById(userIdToUnfollow);
 
         buyer.removeFollowed(seller);
         seller.removeFollower(buyer);
     }
+
+    public Buyer findBuyerById(Long id){
+        return iBuyerRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Buyer"));
+    }
+
 }

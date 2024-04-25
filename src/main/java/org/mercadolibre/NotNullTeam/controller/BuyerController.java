@@ -36,6 +36,7 @@ public class BuyerController {
                                           @PathVariable Long userIdToFollow) {
 
         iBuyerService.followSeller(userId, userIdToFollow);
+
         return ResponseEntity.ok().build();
     }
 
