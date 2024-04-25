@@ -14,8 +14,7 @@ import java.util.Map;
 
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
-    //<SellerId, posts>
-    Map<Long, List<Post>> posts = new HashMap();
+    Map<Long, List<Post>> posts = new HashMap<>();
 
     @Override
     public void createPost(Post post) {
@@ -34,8 +33,8 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public List<Post> getPostsBySellerIdTwoWeeksAgo(Long sellerId){
-        return posts.get(sellerId).stream()
+        return posts.containsKey(sellerId) ? posts.get(sellerId).stream()
                 .filter(post -> ChronoUnit.WEEKS.between(post.getDate(), LocalDate.now()) <= 2)
-                .toList();
+                .toList() : new ArrayList<>();
     }
 }

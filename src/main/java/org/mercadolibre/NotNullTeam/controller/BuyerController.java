@@ -12,18 +12,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/users")
 public class BuyerController {
 
     final IBuyerService iBuyerService;
 
 
-    @GetMapping("/users/all")
+    @GetMapping("/all")
     public ResponseEntity<?> getAll() {
         List<BuyerResponseWithNotSellerListDTO> buyers = iBuyerService.getAll();
         return ResponseEntity.ok(buyers);
     }
 
-    @PostMapping("/users/{userId}/unfollow/{userIdToUnfollow}")
+    @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
     public ResponseEntity<?> unfollowSeller(@PathVariable Long userId,
                                             @PathVariable Long userIdToUnfollow) {
 
@@ -31,7 +32,7 @@ public class BuyerController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/users/{userId}/follow/{userIdToFollow}")
+    @PostMapping("/{userId}/follow/{userIdToFollow}")
     public ResponseEntity<?> followSeller(@PathVariable Long userId,
                                           @PathVariable Long userIdToFollow) {
 
@@ -40,7 +41,7 @@ public class BuyerController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/users/{userId}/followed/list")
+    @GetMapping("/{userId}/followed/list")
     public ResponseEntity<BuyerResponseDTO> getFollowedListOrdered(
             @PathVariable Long userId,
             @RequestParam(name = "order", required = false, defaultValue = "name_asc") String order){

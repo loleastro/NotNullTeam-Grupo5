@@ -60,6 +60,7 @@ public class PostServiceImpl implements IPostService {
     @Override
     public PostsByFollowedDTO getPostsBySellerTwoWeeksAgo(Long userId, String order) {
         List<Post> posts = new ArrayList<>();
+
         iBuyerRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Buyer"))
                 .getFollowedList().stream()

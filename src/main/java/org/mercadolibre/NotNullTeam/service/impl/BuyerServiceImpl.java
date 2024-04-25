@@ -6,6 +6,7 @@ import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.SellerResponseWithNotBuyerListDTO;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
+import org.mercadolibre.NotNullTeam.exception.error.UserAlreadyFollowedException;
 import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
@@ -25,15 +26,15 @@ public class BuyerServiceImpl implements IBuyerService {
     final ISellerRepository iSellerRepository;
     final ISellerServiceInternal iSellerService;
 
-
-    final ObjectMapper mapper = new ObjectMapper();
-
     @Override
     public void followSeller(Long userId, Long sellerToFollowId) {
 
         Buyer buyer = this.findBuyerById(userId);
         Seller seller =iSellerService.findById(sellerToFollowId);
 
+        if(buyer.getFollowedList().stream().anyMatch(s -> s.getUser().getId().equals(sellerToFollowId))){
+            throw new UserAlreadyFollowedException();
+        }
         buyer.addNewFollowed(seller);
         seller.addNewFollower(buyer);
     }
