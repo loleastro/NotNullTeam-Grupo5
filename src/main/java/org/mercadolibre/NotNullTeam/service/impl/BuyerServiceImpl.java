@@ -1,8 +1,8 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseWithNotSellerListDTO;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.exception.error.UserAlreadyFollowedException;
 import org.mercadolibre.NotNullTeam.mapper.BuyerMapper;

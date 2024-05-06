@@ -1,8 +1,8 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.mercadolibre.NotNullTeam.DTO.request.PostDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.PostsByFollowedDTO;
+import org.mercadolibre.NotNullTeam.DTO.request.post.PostDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.post.PostsByFollowedDTO;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.mapper.PostMapper;
 import org.mercadolibre.NotNullTeam.model.Buyer;

@@ -1,7 +1,7 @@
 package org.mercadolibre.NotNullTeam.service;
 
-import org.mercadolibre.NotNullTeam.DTO.request.PostDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.PostsByFollowedDTO;
+import org.mercadolibre.NotNullTeam.DTO.request.post.PostDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.post.PostsByFollowedDTO;
 
 public interface IPostService {
     Long createPost(PostDTO postDTO);

@@ -1,8 +1,8 @@
 package org.mercadolibre.NotNullTeam.mapper;
 
-import org.mercadolibre.NotNullTeam.DTO.response.BuyerResponseWithNotSellerListDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.SellerResponseDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.SellerResponseWithNotBuyerListDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseWithNotSellerListDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.seller.SellerResponseDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.seller.SellerResponseWithNotBuyerListDTO;
 import org.mercadolibre.NotNullTeam.model.Seller;
 
 import java.util.List;

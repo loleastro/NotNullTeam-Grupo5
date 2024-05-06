@@ -1,9 +1,9 @@
 package org.mercadolibre.NotNullTeam.mapper;
 
-import org.mercadolibre.NotNullTeam.DTO.request.PostDTO;
-import org.mercadolibre.NotNullTeam.DTO.request.ProductDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.PostResponseDTO;
-import org.mercadolibre.NotNullTeam.DTO.response.PostsByFollowedDTO;
+import org.mercadolibre.NotNullTeam.DTO.request.post.PostDTO;
+import org.mercadolibre.NotNullTeam.DTO.request.product.ProductDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.post.PostResponseDTO;
+import org.mercadolibre.NotNullTeam.DTO.response.post.PostsByFollowedDTO;
 import org.mercadolibre.NotNullTeam.model.Post;
 import org.mercadolibre.NotNullTeam.model.Product;
 import org.mercadolibre.NotNullTeam.model.Seller;
