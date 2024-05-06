@@ -1,6 +1,7 @@
 package org.mercadolibre.NotNullTeam.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.mercadolibre.NotNullTeam.exception.error.InvalidParameterException;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.exception.error.UserAlreadyFollowedException;
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,13 @@ public class GlobalExceptionHandler {
         }
 
         return new ResponseEntity<>(formattedErrors, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({InvalidParameterException.class})
+    @ResponseBody
+    protected ExceptionDetails badRequest(Exception exception, HttpServletRequest request) {
+        return new ExceptionDetails(LocalDateTime.now(), exception, request);
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)

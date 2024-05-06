@@ -3,11 +3,13 @@ package org.mercadolibre.NotNullTeam.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseWithNotSellerListDTO;
+import org.mercadolibre.NotNullTeam.exception.error.InvalidParameterException;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.exception.error.UserAlreadyFollowedException;
 import org.mercadolibre.NotNullTeam.mapper.BuyerMapper;
 import org.mercadolibre.NotNullTeam.mapper.SellerMapper;
 import org.mercadolibre.NotNullTeam.model.Buyer;
+import org.mercadolibre.NotNullTeam.model.Post;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
@@ -62,10 +64,10 @@ public class BuyerServiceImpl implements IBuyerService {
 
         List<Seller> followedList = buyer.getFollowedList();
 
-        if (order.equals("name_asc")) {
-            followedList.sort(Comparator.comparing(Seller::getUsername));
-        } else if (order.equals("name_desc")) {
-            followedList.sort(Comparator.comparing(Seller::getUsername).reversed());
+        switch (order) {
+            case "name_asc" -> followedList.sort(Comparator.comparing(Seller::getUsername));
+            case "name_desc" -> followedList.sort(Comparator.comparing(Seller::getUsername).reversed());
+            default -> throw new InvalidParameterException("order -> " + order);
         }
 
         return BuyerMapper.toBuyerResponseDTO(buyer,

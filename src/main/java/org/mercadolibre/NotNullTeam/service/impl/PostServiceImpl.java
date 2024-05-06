@@ -3,6 +3,7 @@ package org.mercadolibre.NotNullTeam.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.request.post.PostDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.post.PostsByFollowedDTO;
+import org.mercadolibre.NotNullTeam.exception.error.InvalidParameterException;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.mapper.PostMapper;
 import org.mercadolibre.NotNullTeam.model.Buyer;
@@ -51,11 +52,12 @@ public class PostServiceImpl implements IPostService {
                 .flatMap(post -> iPostRepository.getPostsByWeeksAgo(WEEKS, post.getUser().getId()).stream())
                 .collect(Collectors.toList());
 
-        if(order.equals("date_asc")) {
-            posts.sort(Comparator.comparing(Post::getDate));
-        }else{
-            posts.sort(Comparator.comparing(Post::getDate).reversed());
+        switch (order) {
+            case "date_asc" -> posts.sort(Comparator.comparing(Post::getDate));
+            case "date_desc" -> posts.sort(Comparator.comparing(Post::getDate).reversed());
+            default -> throw new InvalidParameterException("order -> " + order);
         }
+
 
         return PostMapper.postToPostByFollowed(userId, posts);
     }

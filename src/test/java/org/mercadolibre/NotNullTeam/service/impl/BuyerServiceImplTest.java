@@ -1,8 +1,10 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.model.User;
@@ -48,8 +50,8 @@ class BuyerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se sigue a un seller que existe")
-    void followSellerSuccesfully() {
+    @DisplayName("Se sigue a un seller que existe con exito")
+    void followSellerSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(2L)).thenReturn(seller);
 
@@ -60,18 +62,38 @@ class BuyerServiceImplTest {
     }
 
     @Test
-    void getAll() {
+    @DisplayName("Se sigue a un seller que no existe y lanza error")
+    void followSellerThrowsSellerNotFound() {
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        when(sellerServiceInternal.findById(3L)).thenThrow(new NotFoundException());
+
+        assertThrows(
+                NotFoundException.class,
+                () -> buyerService.followSeller(buyer.getUser().getId(), 3L)
+        );
     }
 
     @Test
-    void getFollowedListOrdered() {
+    @DisplayName("Se deja de seguir a un seller que existe con exito")
+    void testUnfollowSellerSuccessfully() {
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        when(sellerServiceInternal.findById(2L)).thenReturn(seller);
+
+        buyerService.unfollowSeller(buyer.getUser().getId(), seller.getUser().getId());
+
+        verify(buyerRepository, atLeast(1)).update(any());
+        verify(sellerRepository, atLeast(1)).update(any());
     }
 
     @Test
-    void unfollowSeller() {
-    }
+    @DisplayName("Se sigue a un seller que no existe y lanza error")
+    void unfollowSellerThrowsSellerNotFound() {
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        when(sellerServiceInternal.findById(3L)).thenThrow(new NotFoundException());
 
-    @Test
-    void findBuyerById() {
+        assertThrows(
+                NotFoundException.class,
+                () -> buyerService.unfollowSeller(buyer.getUser().getId(), 3L)
+        );
     }
 }
