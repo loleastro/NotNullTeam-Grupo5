@@ -3,6 +3,7 @@ package org.mercadolibre.NotNullTeam.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.seller.SellerFollowersCountDto;
 import org.mercadolibre.NotNullTeam.DTO.response.seller.SellerResponseDTO;
+import org.mercadolibre.NotNullTeam.exception.error.InvalidParameterException;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.mapper.BuyerMapper;
 import org.mercadolibre.NotNullTeam.mapper.SellerMapper;
@@ -47,11 +48,11 @@ public class SellerServiceImpl implements ISellerService, ISellerServiceInternal
         Seller seller = findSellerById(userId, "No se encontro el vendedor con ID = " + userId);
 
         List<Buyer> followersList = seller.getFollowersList();
-
-        if (order.equals("name_asc")) {
-            followersList.sort(Comparator.comparing(Buyer::getUsername));
-        } else if (order.equals("name_desc")) {
-            followersList.sort(Comparator.comparing(Buyer::getUsername).reversed());
+        
+        switch (order) {
+            case "name_asc" -> followersList.sort(Comparator.comparing(Buyer::getUsername));
+            case "name_desc" -> followersList.sort(Comparator.comparing(Buyer::getUsername).reversed());
+            default -> throw new InvalidParameterException("order -> " + order);
         }
 
         return SellerMapper.toSellerResponseDTO(seller, BuyerMapper.toListBuyerResponseWithNotSellerListDTO(seller.getFollowersList()));
