@@ -48,7 +48,7 @@ public class SellerServiceImpl implements ISellerService, ISellerServiceInternal
         Seller seller = findSellerById(userId, "No se encontro el vendedor con ID = " + userId);
 
         List<Buyer> followersList = seller.getFollowersList();
-        
+
         switch (order) {
             case "name_asc" -> followersList.sort(Comparator.comparing(Buyer::getUsername));
             case "name_desc" -> followersList.sort(Comparator.comparing(Buyer::getUsername).reversed());
