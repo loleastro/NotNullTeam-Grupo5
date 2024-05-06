@@ -83,7 +83,7 @@ public class BuyerServiceImpl implements IBuyerService {
         updateRepositories(buyer, seller);
     }
 
-    public Buyer findBuyerById(Long id){
+    private Buyer findBuyerById(Long id){
         return iBuyerRepository
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("Buyer"));
