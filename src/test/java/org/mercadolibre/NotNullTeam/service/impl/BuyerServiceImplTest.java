@@ -88,10 +88,17 @@ class BuyerServiceImplTest {
 
 
     @Test
-    @DisplayName("El tipo de ordenamiento es valido")
-    void getFollowedListOrderedSuccessfully() {
+    @DisplayName("El tipo de ordenamiento es valido por param name_asc")
+    void getFollowedListOrderedNameAscSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         assertNotNull(buyerService.getFollowedListOrdered(1L, "name_asc"));
+    }
+
+    @Test
+    @DisplayName("El tipo de ordenamiento es valido por param name_desc")
+    void getFollowedListOrderedNameDescSuccessfully() {
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        assertNotNull(buyerService.getFollowedListOrdered(1L, "name_desc"));
     }
 
 
