@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.request.product.ProductDTO;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,4 +35,6 @@ public class PostDTO {
     @Positive(message = "El precio no puede ser negativo.")
     @Max(value = 10_000_000, message = "El precio máximo por producto es de $10.000.000")
     private Double price;
+
+
 }
