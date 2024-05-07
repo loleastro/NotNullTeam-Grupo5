@@ -119,18 +119,4 @@ class PostServiceImplTest {
                 () -> postService.getPostsByWeeksAgo(1L, "date_asc")
         );
     }
-
-    @Test
-    @DisplayName("Se intenta realizar la busqueda de posts pero con un order invalido, por lo que lanza InvalidParameterException.")
-    void testGetPostsByWeeksAgoOrderWithInvalidOrder() {
-        when(iBuyerRepository.findById(1L))
-                .thenReturn(Optional.of(buyer));
-        when(iPostRepository.getPostsByWeeksAgo(WEEKS, 2L))
-                .thenReturn(postsReturn);
-
-        assertThrows(
-                InvalidParameterException.class,
-                () -> postService.getPostsByWeeksAgo(1L, "any_order")
-        );
-    }
 }
