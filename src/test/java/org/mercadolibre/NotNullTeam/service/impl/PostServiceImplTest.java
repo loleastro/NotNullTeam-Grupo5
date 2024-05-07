@@ -1,5 +1,6 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,13 +14,10 @@ import org.mercadolibre.NotNullTeam.repository.IPostRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -66,6 +64,45 @@ class PostServiceImplTest {
                 ));
             }
         };
+    }
+
+    @Test
+    @DisplayName("Se verifica que el tipo de ordenamiento por fecha asc exista")
+    public void testGetPostsByDateAscExists(){
+        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        when(iPostRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
+
+        PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
+
+        PostsByFollowedDTO obtainedAsc = postService.getPostsByWeeksAgo(1L, "date_asc");
+
+        Assertions.assertEquals(expected, obtainedAsc);
+    }
+
+    @Test
+    @DisplayName("Se verifica que el tipo de ordenamiento por fecha desc exista")
+    public void testGetPostsByDateDescExists(){
+        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        when(iPostRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
+
+        PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
+
+        PostsByFollowedDTO obtainedDesc = postService.getPostsByWeeksAgo(1L, "date_desc");
+
+        Assertions.assertEquals(expected, obtainedDesc);
+    }
+
+    @Test
+    @DisplayName("Se verifica que el tipo de ordenamiento por fecha es invalido")
+    public void testGetPostsByDateInvalidOrder() {
+        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        when(iPostRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
+
+        String order = "invalid";
+
+        Assertions.assertThrows(InvalidParameterException.class, () -> {
+            postService.getPostsByWeeksAgo(1L, order);
+        });
     }
 
     @Test
