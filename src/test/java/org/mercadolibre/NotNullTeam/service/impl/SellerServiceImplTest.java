@@ -92,7 +92,7 @@ class SellerServiceImplTest {
     @Test
     @DisplayName("Se intenta obtener la cantidad de seguidores de un vendedor que no existe y lanza error")
     public void getFollowersCountThrowsSellerNotFound() {
-        when(sellerRepository.findById(120L)).thenThrow(new NotFoundException());
+        when(sellerRepository.findById(120L)).thenReturn(Optional.empty());
 
         assertThrows(
                 NotFoundException.class,
