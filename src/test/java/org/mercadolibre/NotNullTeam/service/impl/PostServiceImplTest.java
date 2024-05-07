@@ -35,26 +35,13 @@ class PostServiceImplTest {
 
     private Buyer buyer;
     private Seller seller;
-    private Post post1;
-    private Post post2;
-    private LocalDate fecha;
-    private Product product;
-    private int categoria;
-    private Double precio;
     private int WEEKS = 2;
     private List<Post> postsReturn;
 
     @BeforeEach
     public void setup() {
-        this.fecha = LocalDate.now().minusDays(10); // Fecha hace 10 días
-        this.product = new Product();
-        this.categoria = 1; // Categoría de ejemplo
-        this.precio = 100.0; // Precio de ejemplo
         seller = new Seller(new User(2L, "SecondUser"), new ArrayList<>());
         buyer = new Buyer(new User(1L, "FirstUser"), List.of(seller));
-
-        this.post1 = new Post(seller, fecha, product, categoria, precio);
-        this.post2 = new Post(seller, fecha, product, categoria, precio);
 
         postsReturn = new ArrayList<>() {
             {
@@ -89,23 +76,18 @@ class PostServiceImplTest {
     @Test
     @DisplayName("Verificar que se devuelven solo las publicaciones de las últimas dos semanas")
     void getPostsByWeeksAgo() {
-        // Arrange
-        List<Seller> followedList = Arrays.asList(seller);
-        buyer.setFollowedList(followedList);
-
-        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-
-        //devuelvo la lista de posts
+        when(iBuyerRepository.findById(1L))
+                .thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo
-                (2, seller.getUser().getId())).thenReturn(Arrays.asList(post1, post2));
+                (WEEKS, seller.getUser().getId()))
+                .thenReturn(postsReturn);
 
         PostsByFollowedDTO expected =
-                PostMapper.postToPostByFollowed(buyer.getUser().getId(), Arrays.asList(post1, post2));
+                PostMapper.postToPostByFollowed(buyer.getUser().getId(), postsReturn);
 
         // Act
         PostsByFollowedDTO result = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC);
 
-        // Assert
         assertEquals(2, result.getPosts().size());
         assertEquals(expected, result);
     }
@@ -113,8 +95,10 @@ class PostServiceImplTest {
     @Test
     @DisplayName("Se verifica que el tipo de ordenamiento por fecha asc exista")
     public void testGetPostsByDateAscExists() {
-        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-        when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
+        when(iBuyerRepository.findById(1L))
+                .thenReturn(Optional.of(buyer));
+        when(postRepository.getPostsByWeeksAgo(2, 1L))
+                .thenReturn(new ArrayList<>());
 
         PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
 
@@ -126,8 +110,10 @@ class PostServiceImplTest {
     @Test
     @DisplayName("Se verifica que el tipo de ordenamiento por fecha desc exista")
     public void testGetPostsByDateDescExists() {
-        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-        when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
+        when(iBuyerRepository.findById(1L))
+                .thenReturn(Optional.of(buyer));
+        when(postRepository.getPostsByWeeksAgo(2, 1L))
+                .thenReturn(new ArrayList<>());
 
         PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
 
@@ -139,8 +125,10 @@ class PostServiceImplTest {
     @Test
     @DisplayName("Se verifica que el tipo de ordenamiento por fecha es invalido")
     public void testGetPostsByDateInvalidOrder() {
-        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-        when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
+        when(iBuyerRepository.findById(1L))
+                .thenReturn(Optional.of(buyer));
+        when(postRepository.getPostsByWeeksAgo(2, 1L))
+                .thenReturn(new ArrayList<>());
 
         String order = "invalid";
 
@@ -152,8 +140,10 @@ class PostServiceImplTest {
     @Test
     @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha ascendente.")
     void testGetPostsByWeeksAgoOrderAsc() {
-        when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-        when(postRepository.getPostsByWeeksAgo(WEEKS, 2L)).thenReturn(postsReturn);
+        when(iBuyerRepository.findById(1L))
+                .thenReturn(Optional.of(buyer));
+        when(postRepository.getPostsByWeeksAgo(WEEKS, 2L))
+                .thenReturn(postsReturn);
 
         PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC);
 
