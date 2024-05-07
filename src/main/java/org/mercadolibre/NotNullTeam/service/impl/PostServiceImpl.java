@@ -19,6 +19,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.mercadolibre.NotNullTeam.util.TypeOrder.DATE_ASC;
+import static org.mercadolibre.NotNullTeam.util.TypeOrder.DATE_DESC;
+
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements IPostService {
@@ -29,17 +32,16 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Long createPost(PostDTO postDTO) {
-        return iPostRepository.createPost(PostMapper.postDtoToPost(postDTO, findSellerById(postDTO.getUser_id())));
+        return iPostRepository.createPost(PostMapper.postDtoToPost(postDTO,
+                findSellerById(postDTO.getUser_id())));
     }
 
-    private Seller findSellerById(Long id){
-        return iSellerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Seller"));
+    private Seller findSellerById(Long id) {
+        return iSellerRepository.findById(id).orElseThrow(() -> new NotFoundException("Seller"));
     }
 
-    private Buyer findBuyerById(Long id){
-        return iBuyerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Buyer"));
+    private Buyer findBuyerById(Long id) {
+        return iBuyerRepository.findById(id).orElseThrow(() -> new NotFoundException("Buyer"));
     }
 
     @Override
@@ -47,14 +49,17 @@ public class PostServiceImpl implements IPostService {
         Buyer buyer = findBuyerById(userId);
         final int WEEKS = 2;
 
-        List<Post> posts = buyer.getFollowedList()
+        List<Post> posts = buyer
+                .getFollowedList()
                 .stream()
-                .flatMap(post -> iPostRepository.getPostsByWeeksAgo(WEEKS, post.getUser().getId()).stream())
+                .flatMap(post -> iPostRepository
+                        .getPostsByWeeksAgo(WEEKS, post.getUser().getId())
+                        .stream())
                 .collect(Collectors.toList());
 
         switch (order) {
-            case "date_asc" -> posts.sort(Comparator.comparing(Post::getDate));
-            case "date_desc" -> posts.sort(Comparator.comparing(Post::getDate).reversed());
+            case DATE_ASC -> posts.sort(Comparator.comparing(Post::getDate));
+            case DATE_DESC -> posts.sort(Comparator.comparing(Post::getDate).reversed());
             default -> throw new InvalidParameterException("order -> " + order);
         }
 

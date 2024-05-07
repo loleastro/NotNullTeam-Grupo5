@@ -9,7 +9,6 @@ import org.mercadolibre.NotNullTeam.exception.error.UserAlreadyFollowedException
 import org.mercadolibre.NotNullTeam.mapper.BuyerMapper;
 import org.mercadolibre.NotNullTeam.mapper.SellerMapper;
 import org.mercadolibre.NotNullTeam.model.Buyer;
-import org.mercadolibre.NotNullTeam.model.Post;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
@@ -19,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+
+import static org.mercadolibre.NotNullTeam.util.TypeOrder.NAME_ASC;
+import static org.mercadolibre.NotNullTeam.util.TypeOrder.NAME_DESC;
 
 
 @Service
@@ -32,9 +34,12 @@ public class BuyerServiceImpl implements IBuyerService {
     public void followSeller(Long userId, Long sellerToFollowId) {
 
         Buyer buyer = this.findBuyerById(userId);
-        Seller seller =iSellerService.findById(sellerToFollowId);
+        Seller seller = iSellerService.findById(sellerToFollowId);
 
-        if(buyer.getFollowedList().stream().anyMatch(s -> s.getUser().getId().equals(sellerToFollowId))){
+        if (buyer
+                .getFollowedList()
+                .stream()
+                .anyMatch(s -> s.getUser().getId().equals(sellerToFollowId))) {
             throw new UserAlreadyFollowedException();
         }
 
@@ -44,7 +49,7 @@ public class BuyerServiceImpl implements IBuyerService {
         updateRepositories(buyer, seller);
     }
 
-    private void updateRepositories(Buyer buyer, Seller seller){
+    private void updateRepositories(Buyer buyer, Seller seller) {
         iBuyerRepository.update(buyer);
         iSellerRepository.update(seller);
     }
@@ -54,24 +59,26 @@ public class BuyerServiceImpl implements IBuyerService {
         return iBuyerRepository
                 .findAll()
                 .stream()
-                .map(e -> new BuyerResponseWithNotSellerListDTO(e.getUser().getId(), e.getUser().getName())).toList();
+                .map(e -> new BuyerResponseWithNotSellerListDTO(e.getUser().getId(),
+                        e.getUser().getName()))
+                .toList();
     }
 
     @Override
     public BuyerResponseDTO getFollowedListOrdered(Long userId, String order) {
-        Buyer buyer =
-                this.findBuyerById(userId);
+        Buyer buyer = this.findBuyerById(userId);
 
         List<Seller> followedList = buyer.getFollowedList();
 
         switch (order) {
-            case "name_asc" -> followedList.sort(Comparator.comparing(Seller::getUsername));
-            case "name_desc" -> followedList.sort(Comparator.comparing(Seller::getUsername).reversed());
+            case NAME_ASC -> followedList.sort(Comparator.comparing(Seller::getUsername));
+            case NAME_DESC ->
+                    followedList.sort(Comparator.comparing(Seller::getUsername).reversed());
             default -> throw new InvalidParameterException("order -> " + order);
         }
 
         return BuyerMapper.toBuyerResponseDTO(buyer,
-                  SellerMapper.toListSellerResponseWithNotBuyerListDTO(followedList));
+                SellerMapper.toListSellerResponseWithNotBuyerListDTO(followedList));
     }
 
 
@@ -85,10 +92,8 @@ public class BuyerServiceImpl implements IBuyerService {
         updateRepositories(buyer, seller);
     }
 
-    private Buyer findBuyerById(Long id){
-        return iBuyerRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException("Buyer"));
+    private Buyer findBuyerById(Long id) {
+        return iBuyerRepository.findById(id).orElseThrow(() -> new NotFoundException("Buyer"));
     }
 
 }

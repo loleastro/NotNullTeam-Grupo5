@@ -11,6 +11,7 @@ import org.mercadolibre.NotNullTeam.model.User;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
 import org.mercadolibre.NotNullTeam.service.ISellerServiceInternal;
+import org.mercadolibre.NotNullTeam.util.TypeOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -91,14 +92,14 @@ class BuyerServiceImplTest {
     @DisplayName("El tipo de ordenamiento es valido por param name_asc")
     void getFollowedListOrderedNameAscSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-        assertNotNull(buyerService.getFollowedListOrdered(1L, "name_asc"));
+        assertNotNull(buyerService.getFollowedListOrdered(1L, TypeOrder.NAME_ASC));
     }
 
     @Test
     @DisplayName("El tipo de ordenamiento es valido por param name_desc")
     void getFollowedListOrderedNameDescSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-        assertNotNull(buyerService.getFollowedListOrdered(1L, "name_desc"));
+        assertNotNull(buyerService.getFollowedListOrdered(1L, TypeOrder.NAME_ASC));
     }
 
 
