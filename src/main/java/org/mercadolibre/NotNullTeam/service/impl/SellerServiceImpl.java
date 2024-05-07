@@ -17,6 +17,9 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
+import static org.mercadolibre.NotNullTeam.util.TypeOrder.NAME_ASC;
+import static org.mercadolibre.NotNullTeam.util.TypeOrder.NAME_DESC;
+
 @Service
 @RequiredArgsConstructor
 public class SellerServiceImpl implements ISellerService, ISellerServiceInternal {
@@ -24,23 +27,28 @@ public class SellerServiceImpl implements ISellerService, ISellerServiceInternal
 
     @Override
     public SellerFollowersCountDto getFollowersCount(Long id) {
-        Seller seller = iSellerRepository.findById(id).orElseThrow(() -> new NotFoundException("Seller"));
+        Seller seller = iSellerRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFoundException("Seller"));
 
         int followersCount = seller.quantityOfFollowers();
 
-        return new SellerFollowersCountDto(seller.getUser().getId(), seller.getUser().getName(), followersCount);
+        return new SellerFollowersCountDto(seller.getUser().getId(),
+                seller.getUser().getName(),
+                followersCount);
     }
 
     @Override
-    public Seller findById(Long id){
+    public Seller findById(Long id) {
         return findSellerById(id, "Seller");
     }
-  
+
     @Override
     public SellerResponseDTO getListFollowers(Long userId) {
         Seller seller = findSellerById(userId, "Seller");
 
-        return SellerMapper.toSellerResponseDTO(seller, BuyerMapper.toListBuyerResponseWithNotSellerListDTO(seller.getFollowersList()));
+        return SellerMapper.toSellerResponseDTO(seller,
+                BuyerMapper.toListBuyerResponseWithNotSellerListDTO(seller.getFollowersList()));
     }
 
     @Override
@@ -50,16 +58,17 @@ public class SellerServiceImpl implements ISellerService, ISellerServiceInternal
         List<Buyer> followersList = seller.getFollowersList();
 
         switch (order) {
-            case "name_asc" -> followersList.sort(Comparator.comparing(Buyer::getUsername));
-            case "name_desc" -> followersList.sort(Comparator.comparing(Buyer::getUsername).reversed());
+            case NAME_ASC -> followersList.sort(Comparator.comparing(Buyer::getUsername));
+            case NAME_DESC ->
+                    followersList.sort(Comparator.comparing(Buyer::getUsername).reversed());
             default -> throw new InvalidParameterException("order -> " + order);
         }
 
-        return SellerMapper.toSellerResponseDTO(seller, BuyerMapper.toListBuyerResponseWithNotSellerListDTO(seller.getFollowersList()));
+        return SellerMapper.toSellerResponseDTO(seller,
+                BuyerMapper.toListBuyerResponseWithNotSellerListDTO(seller.getFollowersList()));
     }
 
-    private Seller findSellerById(Long id, String message){
-        return iSellerRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(message));
+    private Seller findSellerById(Long id, String message) {
+        return iSellerRepository.findById(id).orElseThrow(() -> new NotFoundException(message));
     }
 }

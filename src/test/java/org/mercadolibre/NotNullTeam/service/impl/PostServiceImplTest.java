@@ -11,6 +11,7 @@ import org.mercadolibre.NotNullTeam.mapper.PostMapper;
 import org.mercadolibre.NotNullTeam.model.*;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.IPostRepository;
+import org.mercadolibre.NotNullTeam.util.TypeOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -102,7 +103,7 @@ class PostServiceImplTest {
                 PostMapper.postToPostByFollowed(buyer.getUser().getId(), Arrays.asList(post1, post2));
 
         // Act
-        PostsByFollowedDTO result = postService.getPostsByWeeksAgo(1L, "date_asc");
+        PostsByFollowedDTO result = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC);
 
         // Assert
         assertEquals(2, result.getPosts().size());
@@ -117,7 +118,7 @@ class PostServiceImplTest {
 
         PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
 
-        PostsByFollowedDTO obtainedAsc = postService.getPostsByWeeksAgo(1L, "date_asc");
+        PostsByFollowedDTO obtainedAsc = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC);
 
         Assertions.assertEquals(expected, obtainedAsc);
     }
@@ -130,7 +131,7 @@ class PostServiceImplTest {
 
         PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
 
-        PostsByFollowedDTO obtainedDesc = postService.getPostsByWeeksAgo(1L, "date_desc");
+        PostsByFollowedDTO obtainedDesc = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_DESC);
 
         Assertions.assertEquals(expected, obtainedDesc);
     }
@@ -154,7 +155,7 @@ class PostServiceImplTest {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(WEEKS, 2L)).thenReturn(postsReturn);
 
-        PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, "date_asc");
+        PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC);
 
         assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postsReturn), postsByFollowedDTO);
     }
@@ -169,7 +170,7 @@ class PostServiceImplTest {
 
         postsReturn.sort(Comparator.comparing(Post::getDate).reversed());
 
-        PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, "date_desc");
+        PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_DESC);
 
         assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postsReturn), postsByFollowedDTO);
     }
@@ -185,7 +186,7 @@ class PostServiceImplTest {
         when(postRepository.getPostsByWeeksAgo(WEEKS, 2L))
                 .thenReturn(postsReturn);
 
-        PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, "date_asc");
+        PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC);
 
         assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postsReturn), postsByFollowedDTO);
     }
@@ -198,7 +199,7 @@ class PostServiceImplTest {
                 .thenReturn(Optional.empty());
         assertThrows(
                 NotFoundException.class,
-                () -> postService.getPostsByWeeksAgo(1L, "date_asc")
+                () -> postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC)
         );
     }
 }
