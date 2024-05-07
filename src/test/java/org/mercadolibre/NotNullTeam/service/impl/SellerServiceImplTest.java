@@ -32,32 +32,35 @@ class SellerServiceImplTest {
 
     @InjectMocks
     SellerServiceImpl sellerService;
+    Seller seller;
+    Buyer buyerA;
+    Buyer buyerC;
+    Buyer buyerB;
 
-    @Test
-    void findById() {
+    @BeforeEach
+    void setUpBeforeEach() {
+        this.seller = new Seller(
+                new User(1L, "UsuarioUno"),
+                new ArrayList<>()
+        );
+        this.buyerA = new Buyer(
+                new User(2L, "A"),
+                new ArrayList<>()
+        );
+        this.buyerC = new Buyer(
+                new User(4L, "C"),
+                new ArrayList<>()
+        );
+        this.buyerB = new Buyer(
+                new User(3L, "B"),
+                new ArrayList<>()
+        );
     }
 
     @Test
     @DisplayName("get followers list ordered by name_asc")
     void getListFollowersOrdered() {
         // Arrange
-        Seller seller = new Seller(
-                new User(1L, "UsuarioUno"),
-                new ArrayList<>()
-        );
-
-        Buyer buyerA = new Buyer(
-                new User(2L, "A"),
-                new ArrayList<>()
-        );
-        Buyer buyerC = new Buyer(
-                new User(4L, "C"),
-                new ArrayList<>()
-        );
-        Buyer buyerB = new Buyer(
-                new User(3L, "B"),
-                new ArrayList<>()
-        );
 
         seller.setFollowersList(new ArrayList<>(Arrays.asList(buyerC, buyerB, buyerA)));
 
@@ -85,24 +88,6 @@ class SellerServiceImplTest {
     @DisplayName("get followers list ordered by name_desc")
     void getListFollowersOrderedDesc() {
         // Arrange
-        Seller seller = new Seller(
-                new User(1L, "UsuarioUno"),
-                new ArrayList<>()
-        );
-
-        Buyer buyerA = new Buyer(
-                new User(2L, "A"),
-                new ArrayList<>()
-        );
-        Buyer buyerC = new Buyer(
-                new User(4L, "C"),
-                new ArrayList<>()
-        );
-        Buyer buyerB = new Buyer(
-                new User(3L, "B"),
-                new ArrayList<>()
-        );
-
         seller.setFollowersList(new ArrayList<>(Arrays.asList(buyerA,buyerB,buyerC)));
 
         SellerResponseDTO expectedSeller = new SellerResponseDTO(
