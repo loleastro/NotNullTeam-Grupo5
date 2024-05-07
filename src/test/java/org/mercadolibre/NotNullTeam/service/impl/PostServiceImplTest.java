@@ -44,8 +44,7 @@ class PostServiceImplTest {
         buyer = new Buyer(new User(1L, "FirstUser"), List.of(seller));
         postsReturn = new ArrayList<>(){
             {
-                add(new Post(seller, LocalDate.parse("01-05-2024",
-                        DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                add(new Post(seller, LocalDate.now().minusDays(10),
                         new Product(1L,
                                 "Product1",
                                 "Chair",
@@ -55,8 +54,7 @@ class PostServiceImplTest {
                         2,
                         100.0
                 ));
-                add(new Post(seller, LocalDate.parse("06-05-2024",
-                        DateTimeFormatter.ofPattern("dd-MM-yyyy")),
+                add(new Post(seller, LocalDate.now().minusDays(5),
                         new Product(2L,
                                 "Product2",
                                 "Chair",
