@@ -36,13 +36,13 @@ public class BuyerServiceImpl implements IBuyerService {
         Buyer buyer = this.findBuyerById(userId);
         Seller seller = iSellerService.findById(sellerToFollowId);
 
-        //todo: refactoring
-        if (buyer
+        boolean hasAlreadyFollowed = buyer
                 .getFollowedList()
                 .stream()
-                .anyMatch(s -> s.getUser().getId().equals(sellerToFollowId))) {
-            throw new UserAlreadyFollowedException();
-        }
+                .anyMatch(s -> s.getUser().getId().equals(sellerToFollowId));
+
+        if (hasAlreadyFollowed) throw new UserAlreadyFollowedException();
+
 
         buyer.addNewFollowed(seller);
         seller.addNewFollower(buyer);

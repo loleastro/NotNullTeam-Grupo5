@@ -49,14 +49,7 @@ public class PostServiceImpl implements IPostService {
         Buyer buyer = findBuyerById(userId);
         final int WEEKS = 2;
 
-        //todo: refactoring
-        List<Post> posts = buyer
-                .getFollowedList()
-                .stream()
-                .flatMap(post -> iPostRepository
-                        .getPostsByWeeksAgo(WEEKS, post.getUser().getId())
-                        .stream())
-                .collect(Collectors.toList());
+        List<Post> posts = getPostsOfAllFollowed(buyer, WEEKS);
 
         switch (order) {
             case DATE_ASC -> posts.sort(Comparator.comparing(Post::getDate));
@@ -66,5 +59,15 @@ public class PostServiceImpl implements IPostService {
 
 
         return PostMapper.postToPostByFollowed(userId, posts);
+    }
+
+    private List<Post> getPostsOfAllFollowed(Buyer buyer, int WEEKS) {
+        return buyer
+                .getFollowedList()
+                .stream()
+                .flatMap(post -> iPostRepository
+                        .getPostsByWeeksAgo(WEEKS, post.getUser().getId())
+                        .stream())
+                .collect(Collectors.toList());
     }
 }
