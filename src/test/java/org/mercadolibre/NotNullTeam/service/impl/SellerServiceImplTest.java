@@ -62,6 +62,22 @@ class SellerServiceImplTest {
                 new User(103L, "Popular seller"),
                 new ArrayList<Buyer>()
         );
+        seller = new Seller(
+                new User(1L, "UsuarioUno"),
+                new ArrayList<>()
+        );
+        buyerA = new Buyer(
+                new User(2L, "A"),
+                new ArrayList<>()
+        );
+        buyerC = new Buyer(
+                new User(4L, "C"),
+                new ArrayList<>()
+        );
+        buyerB = new Buyer(
+                new User(3L, "B"),
+                new ArrayList<>()
+        );
         sellerWithFollowers.addNewFollower(buyerOne);
         buyerOne.addNewFollowed(sellerWithFollowers);
         sellerWithFollowers.addNewFollower(buyerTwo);
@@ -115,28 +131,8 @@ class SellerServiceImplTest {
         );
     }
 
-    @BeforeEach
-    void setUpBeforeEach() {
-        this.seller = new Seller(
-                new User(1L, "UsuarioUno"),
-                new ArrayList<>()
-        );
-        this.buyerA = new Buyer(
-                new User(2L, "A"),
-                new ArrayList<>()
-        );
-        this.buyerC = new Buyer(
-                new User(4L, "C"),
-                new ArrayList<>()
-        );
-        this.buyerB = new Buyer(
-                new User(3L, "B"),
-                new ArrayList<>()
-        );
-    }
-
     @Test
-    @DisplayName("get followers list ordered by name_asc")
+    @DisplayName("Obtener lista de seguidores ordenada por nombre ascendente")
     void getListFollowersOrdered() {
         // Arrange
 
@@ -163,7 +159,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("get followers list ordered by name_desc")
+    @DisplayName("Obtener lista de seguidores ordenada por nombre descendente")
     void getListFollowersOrderedDesc() {
         // Arrange
         seller.setFollowersList(new ArrayList<>(Arrays.asList(buyerA,buyerB,buyerC)));
@@ -189,7 +185,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("get followers list by unknow user throws exception")
+    @DisplayName("Obtener la lista de seguidores de un vendedor que no existe se espera una excepcion")
     void getFollowersListByUnknowUserThrowsException() {
         // Arrange
         when(sellerRepository.findById(1L)).thenReturn(Optional.empty());
