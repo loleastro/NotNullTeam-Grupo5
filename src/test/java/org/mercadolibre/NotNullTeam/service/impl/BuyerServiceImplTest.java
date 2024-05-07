@@ -43,8 +43,10 @@ class BuyerServiceImplTest {
         this.seller = new Seller(new User(2L, "UsuarioDos"), new ArrayList<>());
     }
 
+    //TODO:duda de nacho
     @Test
     @DisplayName("Se sigue a un seller que existe con exito")
+    //nacho sigue a eze con exito. caso concreto. preciso.
     void followSellerSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(2L)).thenReturn(seller);
@@ -53,6 +55,7 @@ class BuyerServiceImplTest {
 
         verify(buyerRepository, atLeast(1)).update(any());
         verify(sellerRepository, atLeast(1)).update(any());
+        //todo: verificar que los recursos se encuentren en ambas listas
     }
 
     @Test

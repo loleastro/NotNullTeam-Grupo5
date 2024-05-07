@@ -3,6 +3,7 @@ package org.mercadolibre.NotNullTeam.repository.impl;
 import org.mercadolibre.NotNullTeam.model.Post;
 import org.mercadolibre.NotNullTeam.repository.IPostRepository;
 import org.springframework.stereotype.Repository;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -16,14 +17,12 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public Long createPost(Post post) {
-        Long sellerId = post
-                .getSeller()
-                .getUser()
-                .getId();
+        Long sellerId = post.getSeller().getUser().getId();
 
         if (!posts.containsKey(sellerId)) {
             posts.put(sellerId, new ArrayList<>(List.of(post)));
-        }else{
+        }
+        else {
             posts.get(sellerId).add(post);
         }
 
@@ -31,9 +30,13 @@ public class PostRepositoryImpl implements IPostRepository {
     }
 
     @Override
-    public List<Post> getPostsByWeeksAgo(int weeks, Long sellerId){
-        return posts.containsKey(sellerId) ? posts.get(sellerId).stream()
-                .filter(post -> ChronoUnit.WEEKS.between(post.getDate(), LocalDate.now()) <= weeks)
+    public List<Post> getPostsByWeeksAgo(int weeks, Long sellerId) {
+        int daysPerWeek = 7;
+        int days = daysPerWeek * weeks;
+        return posts.containsKey(sellerId) ? posts
+                .get(sellerId)
+                .stream()
+                .filter(post -> ChronoUnit.DAYS.between(post.getDate(), LocalDate.now()) <= days)
                 .toList() : new ArrayList<>();
     }
 }

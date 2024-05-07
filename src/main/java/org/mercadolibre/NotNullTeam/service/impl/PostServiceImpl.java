@@ -49,6 +49,7 @@ public class PostServiceImpl implements IPostService {
         Buyer buyer = findBuyerById(userId);
         final int WEEKS = 2;
 
+        //todo: refactoring
         List<Post> posts = buyer
                 .getFollowedList()
                 .stream()

@@ -26,6 +26,7 @@ public class PostController {
 
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> getPostsByWeeksAgo(
+          //todo: agregar validaciones
             @PathVariable Long userId,
             @RequestParam(required = false, defaultValue = "date_desc") String order){
         return ResponseEntity.ok(iPostService.getPostsByWeeksAgo(userId, order));

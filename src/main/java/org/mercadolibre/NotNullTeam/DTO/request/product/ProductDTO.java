@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+//TODO: usar camel case con @JsonProperty snakecase
 public class ProductDTO {
     @NotNull(message = "El id no puede estar vacío.")
     @Min(value = 1, message = "El id debe ser mayor a cero.")

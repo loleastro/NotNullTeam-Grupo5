@@ -36,6 +36,7 @@ public class BuyerServiceImpl implements IBuyerService {
         Buyer buyer = this.findBuyerById(userId);
         Seller seller = iSellerService.findById(sellerToFollowId);
 
+        //todo: refactoring
         if (buyer
                 .getFollowedList()
                 .stream()
