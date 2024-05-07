@@ -113,7 +113,7 @@ class PostServiceImplTest {
 
     @Test
     @DisplayName("Se intenta realizar la busqueda de posts pero no se logra encontrar a el buyer con el id solicitado, por lo que lanza NotFoundException.")
-    void testGetPostsByWeeksAgoOrderWithNonExistId() {
+    void testGetPostsByWeeksAgoOrderWithNonExistentId() {
         when(iBuyerRepository.findById(1L))
                 .thenThrow(NotFoundException.class);
         assertThrows(
