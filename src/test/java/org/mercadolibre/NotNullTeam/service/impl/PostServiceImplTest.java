@@ -38,17 +38,28 @@ public class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se verifica que el tipo de ordenamiento por fecha asc y desc exista")
-    public void testGetPostsByDateExists(){
+    @DisplayName("Se verifica que el tipo de ordenamiento por fecha asc exista")
+    public void testGetPostsByDateAscExists(){
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
 
         PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
 
         PostsByFollowedDTO obtainedAsc = postService.getPostsByWeeksAgo(1L, "date_asc");
-        PostsByFollowedDTO obtainedDesc = postService.getPostsByWeeksAgo(1L, "date_desc");
 
         Assertions.assertEquals(expected, obtainedAsc);
+    }
+
+    @Test
+    @DisplayName("Se verifica que el tipo de ordenamiento por fecha desc exista")
+    public void testGetPostsByDateDescExists(){
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
+
+        PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
+
+        PostsByFollowedDTO obtainedDesc = postService.getPostsByWeeksAgo(1L, "date_desc");
+
         Assertions.assertEquals(expected, obtainedDesc);
     }
 
