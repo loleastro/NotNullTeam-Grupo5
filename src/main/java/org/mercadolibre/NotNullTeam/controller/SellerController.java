@@ -30,5 +30,4 @@ public class SellerController {
                 HttpStatus.OK
         );
     }
-
 }
