@@ -10,7 +10,6 @@ import org.mercadolibre.NotNullTeam.mapper.PostMapper;
 import org.mercadolibre.NotNullTeam.model.*;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.IPostRepository;
-import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,13 +36,13 @@ class PostServiceImplTest {
 
     private Seller seller;
     private Buyer buyer;
-    private List<Post> postReturn;
+    private List<Post> postsReturn;
 
     @BeforeEach
     public void setup() {
         seller = new Seller(new User(2L, "SecondUser"), new ArrayList<>());
         buyer = new Buyer(new User(1L, "FirstUser"), List.of(seller));
-        postReturn = new ArrayList<>(){
+        postsReturn = new ArrayList<>(){
             {
                 add(new Post(seller, LocalDate.parse("01-05-2024",
                         DateTimeFormatter.ofPattern("dd-MM-yyyy")),
@@ -75,11 +74,11 @@ class PostServiceImplTest {
     @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha ascendente")
     void testGetPostsByWeeksAgoOrderAsc() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
-        when(iPostRepository.getPostsByWeeksAgo(WEEKS, 2L)).thenReturn(postReturn);
+        when(iPostRepository.getPostsByWeeksAgo(WEEKS, 2L)).thenReturn(postsReturn);
 
         PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, "date_asc");
 
-        assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postReturn), postsByFollowedDTO);
+        assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postsReturn), postsByFollowedDTO);
     }
 
     @Test
@@ -88,28 +87,28 @@ class PostServiceImplTest {
         when(iBuyerRepository.findById(1L))
                 .thenReturn(Optional.of(buyer));
         when(iPostRepository.getPostsByWeeksAgo(WEEKS, 2L))
-                .thenReturn(postReturn);
+                .thenReturn(postsReturn);
 
-        postReturn.sort(Comparator.comparing(Post::getDate).reversed());
+        postsReturn.sort(Comparator.comparing(Post::getDate).reversed());
 
         PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, "date_desc");
 
-        assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postReturn), postsByFollowedDTO);
+        assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postsReturn), postsByFollowedDTO);
     }
 
     @Test
     @DisplayName("Se obtiene la lista de posteos, siendo estos una lista vacia, por lo que retorna un PostsByFollowedDTO con el atributo posts vacio.")
     void testGetPostsByWeeksAgoOrderAscEmpty() {
-        postReturn = new ArrayList<>();
+        postsReturn = new ArrayList<>();
 
         when(iBuyerRepository.findById(1L))
                 .thenReturn(Optional.of(buyer));
         when(iPostRepository.getPostsByWeeksAgo(WEEKS, 2L))
-                .thenReturn(postReturn);
+                .thenReturn(postsReturn);
 
         PostsByFollowedDTO postsByFollowedDTO = postService.getPostsByWeeksAgo(1L, "date_asc");
 
-        assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postReturn), postsByFollowedDTO);
+        assertEquals(PostMapper.postToPostByFollowed(buyer.getUser().getId(), postsReturn), postsByFollowedDTO);
     }
 
     @Test
@@ -129,7 +128,7 @@ class PostServiceImplTest {
         when(iBuyerRepository.findById(1L))
                 .thenReturn(Optional.of(buyer));
         when(iPostRepository.getPostsByWeeksAgo(WEEKS, 2L))
-                .thenReturn(postReturn);
+                .thenReturn(postsReturn);
 
         assertThrows(
                 InvalidParameterException.class,
