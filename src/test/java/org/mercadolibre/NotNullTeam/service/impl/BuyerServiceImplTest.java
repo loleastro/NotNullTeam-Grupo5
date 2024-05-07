@@ -1,26 +1,25 @@
 package org.mercadolibre.NotNullTeam.service.impl;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mercadolibre.NotNullTeam.exception.error.InvalidParameterException;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.model.Buyer;
 import org.mercadolibre.NotNullTeam.model.Seller;
 import org.mercadolibre.NotNullTeam.model.User;
 import org.mercadolibre.NotNullTeam.repository.IBuyerRepository;
 import org.mercadolibre.NotNullTeam.repository.ISellerRepository;
-import org.mercadolibre.NotNullTeam.service.ISellerService;
 import org.mercadolibre.NotNullTeam.service.ISellerServiceInternal;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -39,14 +38,8 @@ class BuyerServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        this.buyer = new Buyer(
-                new User(1L, "UsuarioUno"),
-                new ArrayList<>()
-        );
-        this.seller = new Seller(
-                new User(2L, "UsuarioDos"),
-                new ArrayList<>()
-        );
+        this.buyer = new Buyer(new User(1L, "UsuarioUno"), new ArrayList<>());
+        this.seller = new Seller(new User(2L, "UsuarioDos"), new ArrayList<>());
     }
 
     @Test
@@ -67,10 +60,8 @@ class BuyerServiceImplTest {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(3L)).thenThrow(new NotFoundException());
 
-        assertThrows(
-                NotFoundException.class,
-                () -> buyerService.followSeller(buyer.getUser().getId(), 3L)
-        );
+        assertThrows(NotFoundException.class,
+                () -> buyerService.followSeller(buyer.getUser().getId(), 3L));
     }
 
     @Test
@@ -91,9 +82,26 @@ class BuyerServiceImplTest {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(3L)).thenThrow(new NotFoundException());
 
-        assertThrows(
-                NotFoundException.class,
-                () -> buyerService.unfollowSeller(buyer.getUser().getId(), 3L)
-        );
+        assertThrows(NotFoundException.class,
+                () -> buyerService.unfollowSeller(buyer.getUser().getId(), 3L));
     }
+
+
+    @Test
+    @DisplayName("El tipo de ordenamiento es valido")
+    void getFollowedListOrderedSuccessfully() {
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        assertNotNull(buyerService.getFollowedListOrdered(1L, "name_asc"));
+    }
+
+
+    @Test
+    @DisplayName("El tipo de ordenamiento NO es valido")
+    void getFollowedListOrderedInvalidParameterException() {
+        when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        assertThrows(InvalidParameterException.class,
+                () -> buyerService.getFollowedListOrdered(1L, "name_ascd"));
+    }
+
+
 }
