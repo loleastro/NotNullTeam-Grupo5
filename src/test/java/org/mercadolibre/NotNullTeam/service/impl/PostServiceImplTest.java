@@ -71,7 +71,7 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha ascendente")
+    @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha ascendente.")
     void testGetPostsByWeeksAgoOrderAsc() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(iPostRepository.getPostsByWeeksAgo(WEEKS, 2L)).thenReturn(postsReturn);
@@ -82,7 +82,7 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha descendente")
+    @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha descendente.")
     void testGetPostsByWeeksAgoOrderDesc() {
         when(iBuyerRepository.findById(1L))
                 .thenReturn(Optional.of(buyer));
