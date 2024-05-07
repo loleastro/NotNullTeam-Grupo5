@@ -99,8 +99,9 @@ class BuyerServiceImplTest {
     @DisplayName("El tipo de ordenamiento NO es valido")
     void getFollowedListOrderedInvalidParameterException() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
+        String invalidParam = "name_invalid";
         assertThrows(InvalidParameterException.class,
-                () -> buyerService.getFollowedListOrdered(1L, "name_ascd"));
+                () -> buyerService.getFollowedListOrdered(1L, invalidParam));
     }
 
 
