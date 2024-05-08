@@ -3,6 +3,7 @@ package org.mercadolibre.NotNullTeam.DTO.request.post;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.request.product.ProductDTO;
@@ -10,6 +11,7 @@ import org.mercadolibre.NotNullTeam.DTO.request.product.ProductDTO;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostDTO {

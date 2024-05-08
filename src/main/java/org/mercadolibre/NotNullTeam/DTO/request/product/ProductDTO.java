@@ -2,10 +2,12 @@ package org.mercadolibre.NotNullTeam.DTO.request.product;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 //TODO: usar camel case con @JsonProperty snakecase
