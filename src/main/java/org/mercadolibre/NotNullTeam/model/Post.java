@@ -1,11 +1,13 @@
 package org.mercadolibre.NotNullTeam.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Post {
     private static Long currentId = 1L;
