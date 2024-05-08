@@ -10,15 +10,18 @@ import java.util.List;
 public class BuyerMapper {
 
     public static BuyerResponseDTO toBuyerResponseDTO(Buyer buyer, List<SellerResponseWithNotBuyerListDTO> sellers) {
-        return new BuyerResponseDTO(
-                buyer.getUser().getId(),
-                buyer.getUser().getName(),
-                sellers
-        );
+        return BuyerResponseDTO.builder()
+                .user_id(buyer.getUser().getId())
+                .user_name(buyer.getUsername())
+                .sellers(sellers)
+                .build();
     }
 
     public static BuyerResponseWithNotSellerListDTO toBuyerResponseWithNotSellerListDTO(Buyer buyer) {
-        return new BuyerResponseWithNotSellerListDTO(buyer.getUser().getId(), buyer.getUser().getName());
+        return BuyerResponseWithNotSellerListDTO.builder()
+                .id(buyer.getUser().getId())
+                .name(buyer.getUser().getName())
+                .build();
     }
 
     public static List<BuyerResponseWithNotSellerListDTO> toListBuyerResponseWithNotSellerListDTO(List<Buyer> buyerList) {
