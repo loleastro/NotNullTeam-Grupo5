@@ -43,32 +43,50 @@ class PostServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        //TODO: implementar builders.
-        seller = new Seller(new User(2L, "SecondUser"), new ArrayList<>());
-        buyer = new Buyer(new User(1L, "FirstUser"), List.of(seller));
+        User buyerUser = User.builder().id(1L).name("FirstUser").build();
+        User sellerUser = User.builder().id(2L).name("SecondUser").build();
+
+        seller = Seller.builder().user(sellerUser).followersList(new ArrayList<>()).build();
+        buyer = Buyer.builder().user(buyerUser).followedList(List.of(seller)).build();
+
+        Product productOne = Product.builder()
+                .id(1L)
+                .name("Product1")
+                .type("Chair")
+                .brand("Gamer")
+                .color("White")
+                .notes("Very gamer with RGB")
+                .build();
+
+        Product productTwo = Product.builder()
+                .id(2L)
+                .name("Product2")
+                .type("Chair")
+                .brand("Gamer")
+                .color("White")
+                .notes("Very gamer with RGB")
+                .build();
+
+        Post postOne = Post.builder()
+                .seller(seller)
+                .date(LocalDate.now().minusDays(10))
+                .product(productOne)
+                .category(2)
+                .price(100.0)
+                .build();
+
+        Post postTwo = Post.builder()
+                .seller(seller)
+                .date(LocalDate.now().minusDays(5))
+                .product(productTwo)
+                .category(3)
+                .price(150.0)
+                .build();
 
         postsReturn = new ArrayList<>() {
             {
-                add(new Post(seller,
-                        LocalDate.now().minusDays(10),
-                        new Product(1L,
-                                "Product1",
-                                "Chair",
-                                "Gamer",
-                                "White",
-                                "Very gamer with RGB"),
-                        2,
-                        100.0));
-                add(new Post(seller,
-                        LocalDate.now().minusDays(5),
-                        new Product(2L,
-                                "Product2",
-                                "Chair",
-                                "Gamer",
-                                "White",
-                                "Very gamer with RGB"),
-                        2,
-                        100.0));
+                add(postOne);
+                add(postTwo);
             }
         };
     }
@@ -97,7 +115,10 @@ class PostServiceImplTest {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
 
-        PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
+        PostsByFollowedDTO expected = PostsByFollowedDTO.builder()
+                .user_id(1L)
+                .posts(new ArrayList<>())
+                .build();
 
         PostsByFollowedDTO obtainedAsc = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_ASC);
 
@@ -110,7 +131,10 @@ class PostServiceImplTest {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
 
-        PostsByFollowedDTO expected = new PostsByFollowedDTO(1L, new ArrayList<>());
+        PostsByFollowedDTO expected = PostsByFollowedDTO.builder()
+                .user_id(1L)
+                .posts(new ArrayList<>())
+                .build();
 
         PostsByFollowedDTO obtainedDesc = postService.getPostsByWeeksAgo(1L, TypeOrder.DATE_DESC);
 

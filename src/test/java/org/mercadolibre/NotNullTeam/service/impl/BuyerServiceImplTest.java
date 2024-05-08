@@ -39,8 +39,11 @@ class BuyerServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        this.buyer = new Buyer(new User(1L, "UsuarioUno"), new ArrayList<>());
-        this.seller = new Seller(new User(2L, "UsuarioDos"), new ArrayList<>());
+        User buyerUser = User.builder().id(1L).name("UsuarioUno").build();
+        User sellerUser = User.builder().id(2L).name("UsuarioDos").build();
+
+        buyer = Buyer.builder().user(buyerUser).followedList(new ArrayList<>()).build();
+        seller = Seller.builder().user(sellerUser).followersList(new ArrayList<>()).build();
     }
 
     @Test

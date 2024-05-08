@@ -15,9 +15,13 @@ import java.util.List;
 public class PostMapper {
 
     public static PostsByFollowedDTO postToPostByFollowed(Long id, List<Post> posts){
-        return new PostsByFollowedDTO(id, posts.stream()
+        List<PostResponseDTO> postsList = posts.stream()
                 .map(PostMapper::postToPostResponseDto)
-                .toList());
+                .toList();
+        return PostsByFollowedDTO.builder()
+                .user_id(id)
+                .posts(postsList)
+                .build();
     }
 
     public static PostResponseDTO postToPostResponseDto(Post post) {
