@@ -49,6 +49,7 @@ public class PostMapper {
                 DateTimeFormatter.ofPattern("dd-MM-yyyy")
         );
         return Post.builder()
+                .id(Post.fetchId())
                 .seller(seller)
                 .date(formattedDate)
                 .product(productDtoToProduct(postDTO.getProduct()))
