@@ -1,8 +1,7 @@
 package org.mercadolibre.NotNullTeam.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.seller.SellerFollowersCountDto;
 import org.mercadolibre.NotNullTeam.service.ISellerService;
@@ -17,13 +16,14 @@ public class SellerController {
     final ISellerService iSellerService;
 
     @GetMapping("/{userId}/followers/count")
-    public ResponseEntity<SellerFollowersCountDto> getFollowersCount(@PathVariable Long userId) {
+    public ResponseEntity<SellerFollowersCountDto> getFollowersCount(
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userId) {
         return ResponseEntity.ok(iSellerService.getFollowersCount(userId));
     }
 
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<?> getListFollowers(
-            @PathVariable Long userId,
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userId,
             @RequestParam(value = "order", required = false, defaultValue = "name_asc") String order) {
         return new ResponseEntity<>(
                 iSellerService.getListFollowersOrdered(userId, order),
