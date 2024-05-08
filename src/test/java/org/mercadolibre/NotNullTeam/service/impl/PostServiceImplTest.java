@@ -74,9 +74,8 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Verificar que se devuelven solo las publicaciones de las últimas dos semanas")
+    @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer x de hace dos semanas")
     void getPostsByWeeksAgo() {
-        //TODO: testear sobre el repo la logica core del filtrado.
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(WEEKS, seller.getUser().getId())).thenReturn(
                 postsReturn);
@@ -92,7 +91,7 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se verifica que el tipo de ordenamiento por fecha asc exista")
+    @DisplayName("verificar que el DATE_ASC sea valido como parametro en la funcion getPostsByWeeksAgo")
     public void testGetPostsByDateAscExists() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
@@ -105,7 +104,7 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se verifica que el tipo de ordenamiento por fecha desc exista")
+    @DisplayName("verificar que el DATE_DESC sea valido como parametro en la funcion getPostsByWeeksAgo")
     public void testGetPostsByDateDescExists() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
@@ -118,7 +117,7 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se verifica que el tipo de ordenamiento por fecha es invalido")
+    @DisplayName("verificar que se lanze una excepcion cuando el order no sea valido en la funcion getPostsByWeeksAgo")
     public void testGetPostsByDateInvalidOrder() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(2, 1L)).thenReturn(new ArrayList<>());
@@ -131,7 +130,8 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha ascendente.")
+    @DisplayName("obtener los posteos de las ultimas dos semanas de los sellers que un buyer x sigue, con un tipo de " +
+            "order valido (DATE_ASC)")
     void testGetPostsByWeeksAgoOrderAsc() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(WEEKS, 2L)).thenReturn(postsReturn);
@@ -144,7 +144,8 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se obtiene la lista de posteos de los sellers seguidos por un buyer ordenados por fecha descendente.")
+    @DisplayName("obtener los posteos de las ultimas dos semanas de los sellers que un buyer x sigue, con un tipo de " +
+            "order valido (DATE_DESC)")
     void testGetPostsByWeeksAgoOrderDesc() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(postRepository.getPostsByWeeksAgo(WEEKS, 2L)).thenReturn(postsReturn);
@@ -159,7 +160,8 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se obtiene la lista de posteos, siendo estos una lista vacia, por lo que retorna un PostsByFollowedDTO con el atributo posts vacio.")
+    @DisplayName("obtener los posteos de las ultimas dos semanas de los sellers que un buyer x sigue, con un tipo de " +
+            "order valido (DATE_ASC) y no se encuentran posteos")
     void testGetPostsByWeeksAgoOrderAscEmpty() {
         postsReturn = new ArrayList<>();
 
@@ -174,7 +176,8 @@ class PostServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se intenta realizar la busqueda de posts pero no se logra encontrar a el buyer con el id solicitado, por lo que lanza NotFoundException.")
+    @DisplayName("obtener los posteos de las ultimas dos semanas de los sellers que un buyer desconocido sigue, lanza" +
+            " excepcion")
     void testGetPostsByWeeksAgoOrderWithNonExistentId() {
         when(iBuyerRepository.findById(1L)).thenReturn(Optional.empty());
         assertThrows(NotFoundException.class,
