@@ -39,7 +39,7 @@ public class PostMapper {
 
     public static ProductDTO productToProductDto(Product product) {
         return ProductDTO.builder()
-                .product_name(product.getName())
+                .productName(product.getName())
                 .type(product.getType())
                 .brand(product.getBrand())
                 .color(product.getColor())
@@ -64,8 +64,8 @@ public class PostMapper {
 
     public static Product productDtoToProduct(ProductDTO productDTO) {
         return Product.builder()
-                .id(productDTO.getProduct_id())
-                .name(productDTO.getProduct_name())
+                .id(productDTO.getProductId())
+                .name(productDTO.getProductName())
                 .type(productDTO.getType())
                 .brand(productDTO.getBrand())
                 .color(productDTO.getColor())
