@@ -19,8 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -56,7 +55,9 @@ class BuyerServiceImplTest {
 
         verify(buyerRepository, atLeast(1)).update(any());
         verify(sellerRepository, atLeast(1)).update(any());
-        //todo: verificar que los recursos se encuentren en ambas listas
+
+        assertTrue(buyer.getFollowedList().contains(seller));
+        assertTrue(seller.getFollowersList().contains(buyer));
     }
 
     @Test
@@ -79,6 +80,9 @@ class BuyerServiceImplTest {
 
         verify(buyerRepository, atLeast(1)).update(any());
         verify(sellerRepository, atLeast(1)).update(any());
+
+        assertFalse(seller.getFollowersList().contains(buyer));
+        assertFalse(buyer.getFollowedList().contains(seller));
     }
 
     @Test
