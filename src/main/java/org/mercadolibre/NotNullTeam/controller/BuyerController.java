@@ -1,5 +1,7 @@
 package org.mercadolibre.NotNullTeam.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseWithNotSellerListDTO;
@@ -25,7 +27,7 @@ public class BuyerController {
     }
 
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> unfollowSeller(@PathVariable Long userId,
+    public ResponseEntity<?> unfollowSeller(@Valid @Min(value = 1, message = "valor minimo 1") @PathVariable Long userId,
                                             @PathVariable Long userIdToUnfollow) {
 
         iBuyerService.unfollowSeller(userId, userIdToUnfollow);

@@ -48,8 +48,8 @@ public class PostMapper {
     }
 
     public static Product productDtoToProduct(ProductDTO productDTO) {
-        return new Product(productDTO.getProduct_id(),
-                productDTO.getProduct_name(),
+        return new Product(productDTO.getProductId(),
+                productDTO.getProductName(),
                 productDTO.getType(),
                 productDTO.getBrand(),
                 productDTO.getColor(),
