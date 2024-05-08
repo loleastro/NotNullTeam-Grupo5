@@ -44,8 +44,7 @@ class BuyerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se sigue a un seller que existe con exito")
-    //TODO: nacho sigue a eze con exito. caso concreto. preciso.
+    @DisplayName("Un buyer x sigue a un seller y, se guarda correctamente")
     void followSellerSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(2L)).thenReturn(seller);
@@ -58,7 +57,7 @@ class BuyerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se sigue a un seller que no existe y lanza error")
+    @DisplayName("Un buyer x sigue a un seller y, el seller no existe y se lanza una excepcion")
     void followSellerThrowsSellerNotFound() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(3L)).thenThrow(new NotFoundException());
@@ -68,7 +67,7 @@ class BuyerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se deja de seguir a un seller que existe con exito")
+    @DisplayName("Un buyer x deja de seguir a un seller y, se guarda correctamente")
     void testUnfollowSellerSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(2L)).thenReturn(seller);
@@ -80,7 +79,7 @@ class BuyerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se sigue a un seller que no existe y lanza error")
+    @DisplayName("Un buyer x deja de seguir a un seller y, el seller no existe y lanza una excepcion")
     void unfollowSellerThrowsSellerNotFound() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         when(sellerServiceInternal.findById(3L)).thenThrow(new NotFoundException());
@@ -91,14 +90,14 @@ class BuyerServiceImplTest {
 
 
     @Test
-    @DisplayName("El tipo de ordenamiento es valido por param name_asc")
+    @DisplayName("obtener lista de seguidos de un buyer x ordenada por nombre de forma ascendente")
     void getFollowedListOrderedNameAscSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         assertNotNull(buyerService.getFollowedListOrdered(1L, TypeOrder.NAME_ASC));
     }
 
     @Test
-    @DisplayName("El tipo de ordenamiento es valido por param name_desc")
+    @DisplayName("obtener lista de seguidos de un buyer x ordenada por nombre de forma descendente")
     void getFollowedListOrderedNameDescSuccessfully() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         assertNotNull(buyerService.getFollowedListOrdered(1L, TypeOrder.NAME_ASC));
@@ -106,7 +105,8 @@ class BuyerServiceImplTest {
 
 
     @Test
-    @DisplayName("El tipo de ordenamiento NO es valido")
+    @DisplayName("obtener lista de seguidos de un buyer x con un parametro invalido de ordenamiento y lanza una " +
+            "excepcion")
     void getFollowedListOrderedInvalidParameterException() {
         when(buyerRepository.findById(1L)).thenReturn(Optional.of(buyer));
         String invalidParam = "name_invalid";
