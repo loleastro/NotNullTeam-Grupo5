@@ -33,7 +33,7 @@ public class PostServiceImpl implements IPostService {
     @Override
     public Long createPost(PostDTO postDTO) {
         return iPostRepository.createPost(PostMapper.postDtoToPost(postDTO,
-                findSellerById(postDTO.getUser_id())));
+                findSellerById(postDTO.getUserId())));
     }
 
     private Seller findSellerById(Long id) {

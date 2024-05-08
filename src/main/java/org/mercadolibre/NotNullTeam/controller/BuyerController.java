@@ -1,5 +1,7 @@
 package org.mercadolibre.NotNullTeam.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.buyer.BuyerResponseWithNotSellerListDTO;
@@ -25,16 +27,18 @@ public class BuyerController {
     }
 
     @PostMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> unfollowSeller(@PathVariable Long userId,
-                                            @PathVariable Long userIdToUnfollow) {
+    public ResponseEntity<?> unfollowSeller(
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userId,
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userIdToUnfollow) {
 
         iBuyerService.unfollowSeller(userId, userIdToUnfollow);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{userId}/follow/{userIdToFollow}")
-    public ResponseEntity<?> followSeller(@PathVariable Long userId,
-                                          @PathVariable Long userIdToFollow) {
+    public ResponseEntity<?> followSeller(
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userId,
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userIdToFollow) {
 
         iBuyerService.followSeller(userId, userIdToFollow);
 
@@ -43,7 +47,7 @@ public class BuyerController {
 
     @GetMapping("/{userId}/followed/list")
     public ResponseEntity<BuyerResponseDTO> getFollowedListOrdered(
-            @PathVariable Long userId,
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userId,
             @RequestParam(name = "order", required = false, defaultValue = "name_asc") String order){
         return new ResponseEntity<>(
                 iBuyerService.getFollowedListOrdered(userId, order),

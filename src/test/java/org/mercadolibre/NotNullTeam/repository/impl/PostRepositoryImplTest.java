@@ -33,7 +33,7 @@ class PostRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("Posts from the last two weeks are returned")
+    @DisplayName("Obtener los posts de las últimas dos semanas de un seller x correctamente")
     void getPostsByWeeksAgoReturnsPostsFromLastTwoWeeks() {
         Post post1 = Post.builder()
                 .seller(seller)
@@ -59,7 +59,8 @@ class PostRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("No posts are returned when there are no posts in the last two weeks")
+    @DisplayName("Obtener los posts de las ultimas dos semanas de un seller x cuando no hay posts en las ultimas " +
+            "dos semanas")
     void getPostsByWeeksAgoReturnsEmptyWhenNoPostsInLastTwoWeeks() {
         Post post = Post.builder()
                 .seller(seller)
@@ -75,7 +76,7 @@ class PostRepositoryImplTest {
     }
 
     @Test
-    @DisplayName("No posts are returned when seller does not exist")
+    @DisplayName("Obtener los posts de las ultimas dos semanas de un seller que no existe")
     void getPostsByWeeksAgoReturnsEmptyWhenSellerDoesNotExist() {
         List<Post> posts = postRepository.getPostsByWeeksAgo(2, 999L);
         assertTrue(posts.isEmpty());

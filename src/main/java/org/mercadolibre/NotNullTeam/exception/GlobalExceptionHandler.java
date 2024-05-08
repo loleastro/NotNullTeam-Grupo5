@@ -1,6 +1,7 @@
 package org.mercadolibre.NotNullTeam.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.ConstraintViolationException;
 import org.mercadolibre.NotNullTeam.exception.error.InvalidParameterException;
 import org.mercadolibre.NotNullTeam.exception.error.NotFoundException;
 import org.mercadolibre.NotNullTeam.exception.error.UserAlreadyFollowedException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -34,7 +36,7 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({InvalidParameterException.class})
+    @ExceptionHandler({InvalidParameterException.class, ConstraintViolationException.class, HandlerMethodValidationException.class})
     @ResponseBody
     protected ExceptionDetails badRequest(Exception exception, HttpServletRequest request) {
         return new ExceptionDetails(LocalDateTime.now(), exception, request);

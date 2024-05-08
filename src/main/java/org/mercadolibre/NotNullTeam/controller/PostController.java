@@ -1,6 +1,7 @@
 package org.mercadolibre.NotNullTeam.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.mercadolibre.NotNullTeam.DTO.request.post.PostDTO;
 import org.mercadolibre.NotNullTeam.DTO.response.post.PostCreatedDto;
@@ -26,8 +27,7 @@ public class PostController {
 
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> getPostsByWeeksAgo(
-          //todo: agregar validaciones
-            @PathVariable Long userId,
+            @PathVariable @Valid @Positive(message = "El id  debe ser mayor a cero.") Long userId,
             @RequestParam(required = false, defaultValue = "date_desc") String order){
         return ResponseEntity.ok(iPostService.getPostsByWeeksAgo(userId, order));
     }

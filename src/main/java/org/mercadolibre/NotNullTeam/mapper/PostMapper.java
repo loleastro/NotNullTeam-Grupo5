@@ -71,5 +71,6 @@ public class PostMapper {
                 .color(productDTO.getColor())
                 .notes(productDTO.getNotes())
                 .build();
+
     }
 }

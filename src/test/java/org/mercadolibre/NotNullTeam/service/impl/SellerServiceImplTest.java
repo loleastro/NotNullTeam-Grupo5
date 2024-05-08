@@ -93,7 +93,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se obtiene la cantidad de seguidores de un vendedor y da 0")
+    @DisplayName("Obtener la cantidad de seguidores de un seller x, y da 0")
     public void getFollowersCountWithoutFollowers() {
         SellerFollowersCountDto expectedResult = SellerFollowersCountDto.builder()
                 .user_id(sellerWithoutFollowers.getUser().getId())
@@ -110,7 +110,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se obtiene la cantidad de seguidores de un vendedor y da 2")
+    @DisplayName("Obtener la cantidad de seguidores de un seller x, y da 2")
     public void getFollowersCountWithFollowers() {
         SellerFollowersCountDto expectedResult = SellerFollowersCountDto.builder()
                 .user_id(sellerWithFollowers.getUser().getId())
@@ -128,7 +128,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Se intenta obtener la cantidad de seguidores de un vendedor que no existe y lanza error")
+    @DisplayName("Se intenta obtener la cantidad de seguidores de un seller que no existe y lanza error")
     public void getFollowersCountThrowsSellerNotFound() {
         when(sellerRepository.findById(120L)).thenReturn(Optional.empty());
 
@@ -136,7 +136,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Obtener lista de seguidores ordenada por nombre ascendente")
+    @DisplayName("Obtener lista de seguidores ordenada de un seller x por nombre ascendente")
     void getListFollowersOrdered() {
         seller.setFollowersList(new ArrayList<>(Arrays.asList(buyerC, buyerB, buyerA)));
 
@@ -172,7 +172,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Obtener lista de seguidores ordenada por nombre descendente")
+    @DisplayName("Obtener lista de seguidores ordenada de un seller x por nombre descendente")
     void getListFollowersOrderedDesc() {
         seller.setFollowersList(new ArrayList<>(Arrays.asList(buyerA, buyerB, buyerC)));
 
@@ -208,7 +208,7 @@ class SellerServiceImplTest {
     }
 
     @Test
-    @DisplayName("Obtener la lista de seguidores de un vendedor que no existe se espera una excepcion")
+    @DisplayName("Obtener la lista de seguidores de un seller que no existe se espera una excepcion")
     void getFollowersListByUnknowUserThrowsException() {
         // Arrange
         when(sellerRepository.findById(1L)).thenReturn(Optional.empty());
