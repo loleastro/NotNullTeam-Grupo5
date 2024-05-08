@@ -1,12 +1,16 @@
 package org.mercadolibre.NotNullTeam.model;
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Post {
-    private static Long currentId = 1L;
+    private static Long currentId = 0L;
     private Long id;
     private Seller seller;
     private LocalDate date;
@@ -15,6 +19,11 @@ public class Post {
     private Double price;
     private Boolean hasPromo;
     private Double discount;
+
+    public static Long fetchId(){
+        currentId++;
+        return currentId;
+    }
 
     public Post(Seller seller, LocalDate date, Product product, int category, Double price) {
         this.id = currentId;

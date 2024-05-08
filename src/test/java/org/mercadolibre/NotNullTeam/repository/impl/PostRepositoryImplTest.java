@@ -22,19 +22,38 @@ class PostRepositoryImplTest {
     @BeforeEach
     void setUp() {
         postRepository = new PostRepositoryImpl();
-        seller = new Seller(new User(1L, "seller1"), new ArrayList<>());
+        User user = User.builder()
+                .id(1L)
+                .name("seller1")
+                .build();
+        seller = Seller.builder()
+                .user(user)
+                .followersList(new ArrayList<>())
+                .build();
     }
 
     @Test
     @DisplayName("Obtener los posts de las últimas dos semanas de un seller x correctamente")
     void getPostsByWeeksAgoReturnsPostsFromLastTwoWeeks() {
-        Post post1 = new Post(seller, LocalDate.now().minusDays(14), null, 0, 0.0);
-        Post post2 = new Post(seller, LocalDate.now().minusDays(15), null, 0, 0.0);
+        Post post1 = Post.builder()
+                .seller(seller)
+                .date(LocalDate.now().minusDays(14))
+                .product(null)
+                .category(0)
+                .price(0.0)
+                .build();
+
+        Post post2 = Post.builder()
+                .seller(seller)
+                .date(LocalDate.now().minusDays(15))
+                .product(null)
+                .category(0)
+                .price(0.0)
+                .build();
+
         postRepository.createPost(post1);
         postRepository.createPost(post2);
-
         List<Post> posts = postRepository.getPostsByWeeksAgo(2, seller.getUser().getId());
-
         assertEquals(1, posts.size());
         assertEquals(post1, posts.get(0));
     }
@@ -43,11 +62,16 @@ class PostRepositoryImplTest {
     @DisplayName("Obtener los posts de las ultimas dos semanas de un seller x cuando no hay posts en las ultimas " +
             "dos semanas")
     void getPostsByWeeksAgoReturnsEmptyWhenNoPostsInLastTwoWeeks() {
-        Post post = new Post(seller, LocalDate.now().minusDays(20), null, 0, 0.0);
+        Post post = Post.builder()
+                .seller(seller)
+                .date(LocalDate.now().minusDays(20))
+                .product(null)
+                .category(0)
+                .price(0.0)
+                .build();
+
         postRepository.createPost(post);
-
         List<Post> posts = postRepository.getPostsByWeeksAgo(2, seller.getUser().getId());
-
         assertTrue(posts.isEmpty());
     }
 

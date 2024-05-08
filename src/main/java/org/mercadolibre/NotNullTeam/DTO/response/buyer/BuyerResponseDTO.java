@@ -6,7 +6,9 @@ import org.mercadolibre.NotNullTeam.DTO.response.seller.SellerResponseWithNotBuy
 
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class BuyerResponseDTO {

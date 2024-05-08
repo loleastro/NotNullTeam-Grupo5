@@ -10,7 +10,10 @@ import java.util.List;
 public class SellerMapper {
 
     public static SellerResponseWithNotBuyerListDTO toSellerResponseWithNotBuyerListDTO(Seller seller) {
-        return new SellerResponseWithNotBuyerListDTO(seller.getUser().getId(), seller.getUser().getName());
+        return SellerResponseWithNotBuyerListDTO.builder()
+                .user_id(seller.getUser().getId())
+                .user_name(seller.getUsername())
+                .build();
     }
 
     public static List<SellerResponseWithNotBuyerListDTO> toListSellerResponseWithNotBuyerListDTO(List<Seller> sellerList) {
@@ -18,10 +21,10 @@ public class SellerMapper {
     }
 
     public static SellerResponseDTO toSellerResponseDTO(Seller seller, List<BuyerResponseWithNotSellerListDTO> buyers){
-        return new SellerResponseDTO(
-                seller.getUser().getId(),
-                seller.getUser().getName(),
-                buyers
-        );
+        return SellerResponseDTO.builder()
+                .id(seller.getUser().getId())
+                .name(seller.getUsername())
+                .followers(buyers)
+                .build();
     }
 }

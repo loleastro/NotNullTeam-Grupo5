@@ -57,12 +57,7 @@ public class BuyerServiceImpl implements IBuyerService {
 
     @Override
     public List<BuyerResponseWithNotSellerListDTO> getAll() {
-        return iBuyerRepository
-                .findAll()
-                .stream()
-                .map(e -> new BuyerResponseWithNotSellerListDTO(e.getUser().getId(),
-                        e.getUser().getName()))
-                .toList();
+        return BuyerMapper.toListBuyerResponseWithNotSellerListDTO(iBuyerRepository.findAll());
     }
 
     @Override

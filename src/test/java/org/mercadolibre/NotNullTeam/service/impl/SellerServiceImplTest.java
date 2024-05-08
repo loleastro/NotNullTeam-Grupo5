@@ -46,38 +46,46 @@ class SellerServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        buyerOne = new Buyer(
-                new User(100L, "Seguidor Numero Uno"),
-                new ArrayList<Seller>()
-        );
-        buyerTwo = new Buyer(
-                new User(101L, "Seguidor Numero Uno"),
-                new ArrayList<Seller>()
-        );
-        sellerWithoutFollowers = new Seller(
-                new User(102L, "Lonely seller"),
-                new ArrayList<Buyer>()
-        );
-        sellerWithFollowers = new Seller(
-                new User(103L, "Popular seller"),
-                new ArrayList<Buyer>()
-        );
-        seller = new Seller(
-                new User(1L, "UsuarioUno"),
-                new ArrayList<>()
-        );
-        buyerA = new Buyer(
-                new User(2L, "A"),
-                new ArrayList<>()
-        );
-        buyerC = new Buyer(
-                new User(4L, "C"),
-                new ArrayList<>()
-        );
-        buyerB = new Buyer(
-                new User(3L, "B"),
-                new ArrayList<>()
-        );
+        buyerOne = Buyer.builder()
+                .user(User.builder().id(100L).name("Seguidor Numero Uno").build())
+                .followedList(new ArrayList<>())
+                .build();
+
+        buyerTwo = Buyer.builder()
+                .user(User.builder().id(101L).name("Seguidor Numero Dos").build())
+                .followedList(new ArrayList<>())
+                .build();
+
+        sellerWithoutFollowers = Seller.builder()
+                .user(User.builder().id(102L).name("Lonely Seller").build())
+                .followersList(new ArrayList<>())
+                .build();
+
+        sellerWithFollowers = Seller.builder()
+                .user(User.builder().id(103L).name("Popular Seller").build())
+                .followersList(new ArrayList<>())
+                .build();
+
+        seller = Seller.builder()
+                .user(User.builder().id(1L).name("Vendedor Uno").build())
+                .followersList(new ArrayList<>())
+                .build();
+
+        buyerA = Buyer.builder()
+                .user(User.builder().id(2L).name("A").build())
+                .followedList(new ArrayList<>())
+                .build();
+
+        buyerC = Buyer.builder()
+                .user(User.builder().id(4L).name("C").build())
+                .followedList(new ArrayList<>())
+                .build();
+
+        buyerB = Buyer.builder()
+                .user(User.builder().id(5L).name("B").build())
+                .followedList(new ArrayList<>())
+                .build();
+
         sellerWithFollowers.addNewFollower(buyerOne);
         buyerOne.addNewFollowed(sellerWithFollowers);
         sellerWithFollowers.addNewFollower(buyerTwo);
@@ -87,9 +95,12 @@ class SellerServiceImplTest {
     @Test
     @DisplayName("Obtener la cantidad de seguidores de un seller x, y da 0")
     public void getFollowersCountWithoutFollowers() {
-        SellerFollowersCountDto expectedResult = new SellerFollowersCountDto(sellerWithoutFollowers
-                .getUser()
-                .getId(), sellerWithoutFollowers.getUsername(), 0);
+        SellerFollowersCountDto expectedResult = SellerFollowersCountDto.builder()
+                .user_id(sellerWithoutFollowers.getUser().getId())
+                .user_name(sellerWithoutFollowers.getUsername())
+                .followers_count(0)
+                .build();
+
         when(sellerRepository.findById(sellerWithoutFollowers.getUser().getId())).thenReturn(
                 Optional.of(sellerWithoutFollowers));
 
@@ -101,9 +112,12 @@ class SellerServiceImplTest {
     @Test
     @DisplayName("Obtener la cantidad de seguidores de un seller x, y da 2")
     public void getFollowersCountWithFollowers() {
-        SellerFollowersCountDto expectedResult = new SellerFollowersCountDto(sellerWithFollowers
-                .getUser()
-                .getId(), sellerWithFollowers.getUsername(), 2);
+        SellerFollowersCountDto expectedResult = SellerFollowersCountDto.builder()
+                .user_id(sellerWithFollowers.getUser().getId())
+                .user_name(sellerWithFollowers.getUsername())
+                .followers_count(2)
+                .build();
+
         when(sellerRepository.findById(sellerWithFollowers
                 .getUser()
                 .getId())).thenReturn(Optional.of(sellerWithFollowers));
@@ -124,59 +138,72 @@ class SellerServiceImplTest {
     @Test
     @DisplayName("Obtener lista de seguidores ordenada de un seller x por nombre ascendente")
     void getListFollowersOrdered() {
-        // Arrange
-
         seller.setFollowersList(new ArrayList<>(Arrays.asList(buyerC, buyerB, buyerA)));
 
-        SellerResponseDTO expectedSeller = new SellerResponseDTO(seller.getUser().getId(),
-                seller.getUser().getName(),
-                new ArrayList<>(List.of(new BuyerResponseWithNotSellerListDTO(buyerA
-                                .getUser()
-                                .getId(), buyerA.getUser().getName()),
-                        new BuyerResponseWithNotSellerListDTO(buyerB.getUser().getId(),
-                                buyerB.getUser().getName()),
-                        new BuyerResponseWithNotSellerListDTO(buyerC.getUser().getId(),
-                                buyerC.getUser().getName())
+        List<BuyerResponseWithNotSellerListDTO> expectedFollowers =
+                List.of(
+                        BuyerResponseWithNotSellerListDTO.builder()
+                                .id(buyerA.getUser().getId())
+                                .name(buyerA.getUsername())
+                                .build(),
+                        BuyerResponseWithNotSellerListDTO.builder()
+                                .id(buyerB.getUser().getId())
+                                .name(buyerB.getUsername())
+                                .build(),
+                        BuyerResponseWithNotSellerListDTO.builder()
+                                .id(buyerC.getUser().getId())
+                                .name(buyerC.getUsername())
+                                .build()
+                );
 
-                )));
+        SellerResponseDTO expectedSeller = SellerResponseDTO.builder()
+                .id(seller.getUser().getId())
+                .name(seller.getUsername())
+                .followers(expectedFollowers)
+                .build();
 
         when(sellerRepository.findById(1L)).thenReturn(Optional.of(seller));
 
-        // Act
         SellerResponseDTO responseSeller = sellerService.getListFollowersOrdered(seller
                 .getUser()
                 .getId(), TypeOrder.NAME_ASC);
 
-        // Assert
         assertEquals(expectedSeller, responseSeller);
     }
 
     @Test
     @DisplayName("Obtener lista de seguidores ordenada de un seller x por nombre descendente")
     void getListFollowersOrderedDesc() {
-        // Arrange
         seller.setFollowersList(new ArrayList<>(Arrays.asList(buyerA, buyerB, buyerC)));
 
-        SellerResponseDTO expectedSeller = new SellerResponseDTO(seller.getUser().getId(),
-                seller.getUser().getName(),
-                new ArrayList<>(List.of(new BuyerResponseWithNotSellerListDTO(buyerC
-                                .getUser()
-                                .getId(), buyerC.getUser().getName()),
-                        new BuyerResponseWithNotSellerListDTO(buyerB.getUser().getId(),
-                                buyerB.getUser().getName()),
-                        new BuyerResponseWithNotSellerListDTO(buyerA.getUser().getId(),
-                                buyerA.getUser().getName())
+        List<BuyerResponseWithNotSellerListDTO> expectedFollowers =
+                List.of(
+                        BuyerResponseWithNotSellerListDTO.builder()
+                                .id(buyerC.getUser().getId())
+                                .name(buyerC.getUsername())
+                                .build(),
+                        BuyerResponseWithNotSellerListDTO.builder()
+                                .id(buyerB.getUser().getId())
+                                .name(buyerB.getUsername())
+                                .build(),
+                        BuyerResponseWithNotSellerListDTO.builder()
+                                .id(buyerA.getUser().getId())
+                                .name(buyerA.getUsername())
+                                .build()
+                );
 
-                )));
+        SellerResponseDTO expectedSeller = SellerResponseDTO.builder()
+                .id(seller.getUser().getId())
+                .name(seller.getUsername())
+                .followers(expectedFollowers)
+                .build();
 
         when(sellerRepository.findById(1L)).thenReturn(Optional.of(seller));
 
-        // Act
         SellerResponseDTO responseSeller = sellerService.getListFollowersOrdered(seller
                 .getUser()
                 .getId(), TypeOrder.NAME_DESC);
 
-        // Assert
         assertEquals(expectedSeller, responseSeller);
     }
 
